@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model IEnumerable<IdentityRole>
+
+@{
+    ViewBag.Title = "All Roles";
+}
+
+<h1>All Roles</h1>
+@if (Model.Any())
+{
+    <a class="btn btn-primary mb3" style="width:auto" asp-action="CreateRole" asp-controller="Administration">Add new role</a>
+    foreach (var role in Model)
+    {
+        <div class="card mb-3">
+            <div class="card-header">
+                Role ID: @role.Id
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@role.Name</h5>
+            </div>
+            <div class="card-footer">
+                <form asp-action="DeleteRole" asp-route-Id="@role.Id" method="post">
+                    <a class="btn btn-primary" asp-action="EditRoles"
+                       asp-controller="Administration" asp-route-id="@role.Id">Edit</a>
+
+                    <span id="confirmDeleteSpan_@role.Id" style="display:none;">
+                        <span>Are you sure you want to delete this account?</span>
+                        <button type="submit" class="btn btn-danger">Yes, delete account.</button>
+                        <a href="#" class="btn btn-primary" onclick="confirmDelete('@role.Id', false)">No, keep account.</a>
+                    </span>
+
+                    <span id="deleteSpan_@role.Id">
+                        <a href="#" class="btn btn-danger" onclick="confirmDelete('@role.Id', true)">Delete</a>
+                    </span>
+                </form>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            No roles were created yet
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Use the button below to create a role</h5>
+        </div>
+        <a class="btn btn-primary" style="width:auto" asp-controller="administration" asp-action="CreateRole">Create Role</a>
+    </div>
+
+}

@@ -1,0 +1,198 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@using System;
+@using System.IO;
+@using System.Linq;
+@using System.Collections.Generic;
+@using Microsoft.AspNetCore.Identity
+@using SvivaTeamVersion3.Areas.Identity.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <style>
+        body, h1, h2, h3, h4, h5 {
+            font-family: "Raleway", sans-serif
+        }
+    </style>
+</head>
+<body class="w3-light-grey">
+
+    <div class="w3-content" style="max-width:1400px">
+
+        <header class="w3-container w3-center w3-padding-32">
+            <h1><b>SvivaTeam</b></h1>
+            <p id="subtitle">יוצרים עולם טוב יותר בעזרת עבודת צוות</p>
+        </header>
+
+        <div class="w3-row">
+
+            <div class="w3-col l8 s12">
+                <div class="w3-card-4 w3-margin w3-white">
+                    <img src="/HomeImages/woods.jpg" alt="Nature" style="width:100%">
+                    <div class="w3-container">
+                        <h3 id="ReportMapTitleTextAlign" style="text-align: right"><b><u id="ReportMapTitleText">מפת ההתראות</u></b></h3>
+                    </div>
+
+                    <div class="w3-container">
+                        <p id="ReportMapBody" style="text-align: right">
+                            .בכדי לייעל ולעזור בהתארגנות של קבוצות ניקיון ועזרה לזולת, אנו משתמשים במפה בה כל משתמש רשום יכול לדווח על בעיה סביבתית או חברתית אותה זיהה בכדי שמשתמשים אחרים יוכלו לעזור לפתור את הבעיה או לדווח עליה לרשויות המתאימות. בלחיצה על הכפתור למטה הנך יכול\ה לעבור לצפייה במפה וחיפוש של דיווחים שתרצה\י להשתתף בפתירתם. בכדי לקרוא עוד על דיווח מסוים לחץ על המרקר המתאים
+                        </p>
+                        <div class="w3-row">
+                            <div class="w3-col m8 s12">
+                                <p><button onclick="window.location.href='Report/Index'" class="w3-button w3-padding-large w3-white w3-border"><b>SEE MAP »</b></button></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+
+                <div class="w3-card-4 w3-margin w3-white">
+                    <img src="/HomeImages/bridge.jpg" alt="Norway" style="width:100%">
+                    <div class="w3-container">
+                        <h3 id="AddReportTitleTextAlign" style="text-align: right"><b><u id="AddReportTitleText">יצירת דיווח חדש</u></b></h3>
+                    </div>
+
+                    <div class="w3-container">
+                        <p id="AddReportBody" style="text-align: right">
+                            זיהית חוף מלוכלך? או אולי מכונית נטושה באמצע הכביש? הוסף דיווח חדש למפת ההתראות ותמצא אנשים חרוצים. שיעזרו לך לפתור את הבעיה! בשביל לדווח על בעיה כלשהי הנך צריך\ה להיות משתמש רשום באתר, לאחר ההרשמה תוכלו לדווח על בעיות סביבתיות או חברתיות בכל מקום, בכל רגע. אם יש לכם קבוצה ברשת חברתית כלשהי הנוגעת בבעיה אל תשכחו להוסיף את הקישור בתיאור הבעיה.
+                        </p>
+                        <div class="w3-row">
+                            <div class="w3-col m8 s12">
+                                <p><button onclick="MoveToCreateReport()" type="submit" class="w3-button w3-padding-large w3-white w3-border"><b>ADD NEW REPORT »</b></button></p>
+                                <script>
+                                    function MoveToCreateReport() {
+                                        window.location.href ="Report/Create";
+                                    }
+                                </script>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w3-col l4">
+                <div class="w3-card w3-margin w3-margin-top">
+                    <img src="/HomeImages/avatar_g.jpg" style="width:100%">
+                    <div class="w3-container w3-white">
+                        <h4 id="AboutProjectTitleTextAlign" style="text-align: right"><b><u id="AboutProjectTitleText">?SvivaTeam מה זה</u></b></h4>
+                        <p id="AboutProjectBody" style="text-align: right">
+                            פרויקט זה הינו פרויקט יזמות סביבתי, חברתי, קיימותי. מטרתו היא להנגיש ולייעל את הארגון של קבוצות נקיון בארץ. אם עד היום ארגנו קבוצות נקיון חופים דרך הפייסבוק, והיה קשה לפעמים למצוא קבוצה פנויה או באזור נוח לכל אחד. הממשק הזה מציע אתר שירכז את כל ההתארגנויות במפת התראות וככה גם ייצור קשר מהיר יותר לרשויות הטבע.
+                        </p>
+                    </div>
+                </div><hr>
+
+                <div class="w3-card w3-margin">
+                    <div class="w3-container w3-padding">
+                        <h4>Recent Reports</h4>
+                    </div>
+                    <ul id="recent-reports" style="list-style: none; margin: 0; padding: 0;" class="w3-ul w3-hoverable w3-white">
+                        @{
+                            var index = 0;
+                            if (Model != null){
+                                foreach(var data in Model){
+                                    string path = data.path;
+                                    string ImgPath = @path.Substring(@path.IndexOf("Files") - 1, (@path.Length - (@path.IndexOf("Files") - 1)));
+                                    string[] ImgPathArray = ImgPath.Split('\\');
+
+                                    string[] filePaths = Directory.GetFiles(@path); // _Data.path
+                                    
+                                    foreach(var file in filePaths)
+                                    {
+                                        List<string> set1 = path.Split('\\').Distinct().ToList();
+                                        List<string> set2 = file.Split('\\').Distinct().ToList();
+
+                                        var diff = set2.Count() > set1.Count() ? set2.Except(set1).ToList() : set1.Except(set2).ToList();
+                                        <form asp-route-Id="@data.Id" method="post">
+                                            <a asp-action="Index" asp-controller="Report" asp-route-id="@data.Id">
+                                                <li id="@data.Id" class="w3-padding-16">
+                                                    <img width="auto" height="auto" id="IMG_@index" style="max-width:50px; max-height:50px; width: auto; height: auto;" src="~/@string.Join("/", ImgPathArray).Remove(0,1)/@string.Join("", diff)" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+                                                    <span class="w3-large">@data.category</span> <span class="w3-medium">@data.title</span><br>
+                                                    @if (data.remarks.Length <= 10) { <span>@data.remarks</span> }
+                                                    else { <span>@data.remarks.Substring(0,10)</span><span>...</span> } 
+                                                </li>
+                                            </a>
+                                        </form>
+                                        index++;
+                                        break;
+                                    }
+                               }
+                           }
+                       }
+                    </ul>
+                </div>
+                <hr> 
+            </div>
+        </div><br><br><br><br>
+    </div>
+</body>
+</html>
+
+<script>
+    const ul = document.getElementById("recent-reports");
+    const ul_elemets = ul.children;
+    for (let i = 0; i < ul_elemets.length; i++){
+
+        const li_image = ul_elemets[i].getElementsByTagName('img');
+
+        const li_image_width = li_image[0]['width'];
+        const li_iamge_height = li_image[0]['height'];
+        
+        console.log(li_image_width, li_iamge_height)
+
+        if(li_image_width/li_iamge_height>0.75){
+            document.getElementById('IMG_'+i).style.marginTop = '3%';
+        }
+    }
+
+    for (let i = 0; i < ul_elemets.length; i++){
+        var li = ul_elemets[i]
+        li.addEventListener("click", function() {
+            //Handle_Window_Transfer(li.id)
+            //togglePublish(li.id);
+        });
+    }
+
+    //async function Handle_Window_Transfer(id){
+    //    await new Promise(resolve => {
+    //        setTimeout(() => {
+    //            window.location.href = "report/index";
+    //            resolve();
+    //        }, 500)
+    //    })
+    //    console.log("Still Proccessing")
+    //    togglePopup(id)
+    //    console.log("Done!")
+    //}
+    
+    function Handle_Window_Transfer(id){
+        //window.location.href = "report/index";
+        
+        $.ajax({
+            type: "POST",
+            url: "https://localhost:44392/Report/Index",
+            data: {"id":id.toString()},
+            dataType: "json",
+            success: function (data, textStatus) {
+                if (data.redirect) {
+                    // data.redirect contains the string URL to redirect to
+                    window.location.replace(data.redirect);
+                } else {
+                    // data.form contains the HTML for the replacement form
+                    $("#my-form").replaceWith(data.form);
+                }
+            }
+        });
+    }
+        
+</script>

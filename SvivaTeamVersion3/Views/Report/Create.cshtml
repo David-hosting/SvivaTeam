@@ -1,0 +1,290 @@
+﻿@model SvivaTeamVersion3.Models.ReportModel
+
+<h4>Add Report</h4>
+<hr />
+@using (Html.BeginForm("Upload", "Report", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="ProcessReport">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="category" class="control-label"></label>
+                    <select asp-for="category" name="Category" id="Category" class="form-control">
+                        <option value="Road_Problems">Road problems</option>
+                        <option value="Urban_Problems">Urban problems</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <span asp-validation-for="category" class="text-danger"></span>
+                </div>
+
+                <div class="form-group" id="Titles">
+                    <label asp-for="title" class="control-label"></label>
+                    <select id="Road_Problems1" class="form-control">
+                        <option value="Accident">Accident</option>
+                        <option value="Disturptive_object">Disturptive object</option>
+                        <option value="Disturptive_parkings">Disturptive parking</option>
+                        <option value="Defective_indication">Defective indication</option>
+                        <option value="Other">Other</option>
+                    </select>
+
+                    <select id="Urban_problems1" class="form-control">
+                        <option value="Neigborhood_problen">Neigborhood problem</option>
+                        <option value="Pollution">Pollution</option>
+                        <option value="Animals">Animals</option>
+                        <option value="Disturptive_object">Disturptive object</option>
+                        <option value="Tag">Tag</option>
+                        <option value="Other">Other</option>
+                    </select>
+
+                    <select id="Other1" class="form-control">
+                        <option value="Other">Other</option>
+                    </select>
+                    <span asp-validation-for="title" class="text-danger"></span>
+
+                    <style>
+                        .form-group #Other1, #Urban_problems1 {
+                            display: none;
+                        }
+                    </style>
+                </div>
+
+                <div class="form-group">
+                    <input asp-for="coordLat" type="hidden" class="form-control" id="lat" />
+                </div>
+
+                <div class="form-group">
+                    <input asp-for="coordLong" type="hidden" class="form-control" id="long" />
+                </div>
+
+                <div class="form-group">
+                    <input asp-for="title" type="hidden" class="form-control" id="hiddenTitle" />
+                </div>
+
+                <script>
+                    document.getElementById("hiddenTitle").value = "Accident";
+                    document.getElementById("Road_Problems1").addEventListener("change", function () {
+                        document.getElementById("hiddenTitle").value = document.getElementById("Road_Problems1").value;
+                    })
+
+                    document.getElementById("Category").addEventListener("change", function () {
+                        let category1 = document.getElementById("Category").value;
+
+                        let RP1 = document.getElementById("Road_Problems1");
+                        let UP1 = document.getElementById("Urban_problems1");
+                        let Other1 = document.getElementById("Other1");
+
+                        if (category1 == "Road_Problems") {
+                            document.getElementById("hiddenTitle").value = RP1.value;
+                            RP1.addEventListener("change", function () {
+                                document.getElementById("hiddenTitle").value = RP1.value;
+                            })
+                        } if (category1 == "Urban_Problems") {
+                            document.getElementById("hiddenTitle").value = UP1.value;
+                            UP1.addEventListener("change", function () {
+                                document.getElementById("hiddenTitle").value = UP1.value;
+                            })
+                        } if (category1 == "Other") {
+                            document.getElementById("hiddenTitle").value = "Other";
+                        }
+                    })
+
+                    
+                    
+                </script>
+
+                <div class="form-group">
+                    <label asp-for="remarks" class="control-label"></label>
+                    <textarea asp-for="remarks" maxlength="250" id="remarks" class="form-control" cols="50" rows="10" style="height: 140px; width: 100%; resize:none;"></textarea>
+                    <span asp-validation-for="remarks" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="statUrgence" class="control-label"></label>
+                    <select asp-for="statUrgence" name="statUrgence" id="statUrgence" class="form-control">
+                        <option value="veryUrgent">Very Urgent</option>
+                        <option value="Urgent">Urgent</option>
+                        <option value="NotUrgent">Not Urgent</option>
+                    </select>
+                    <span asp-validation-for="statUrgence" class="text-danger"></span>
+                </div>
+
+            <div class="form-group row">
+                <label asp-for="File" class="col-sm-2 col-form-label"></label>
+                <div class="custom-file" style="left:3.7%;">
+                    <input type="file" class="form-control custom-file-input" id="File_Upload" name="File" onchange="readURL(this);" accept="image/*" multiple />
+                    <label class="custom-file-label">Chose File</label>
+                </div>
+            </div>
+                
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+
+                <div class="form-group" id="display_image" style="display: none; overflow-y: scroll; height: 400px; width: auto;">
+                    <output id="result" style="overflow-y:scroll; height:400px; width:auto; "></output>
+                </div>
+
+                <link rel="stylesheet" href="~/css/ol.css">
+                <link rel="stylesheet" href="~/css/ol-ext.css">
+
+
+                <script src="~/js/ol.js"></script>
+
+                <script src="~/js/ol-ext.js"></script>
+
+                <div id="map" style="width:600px; height:400px;">
+                    <div class="photon ol-search ol-unselectable ol-control ol-collapsed">
+                        <input type="search" class="search" placeholder="Search..."> @*autocomplete="off"*@
+                        <input type="button" class="ol-revers" title="click on the map">
+                        <ul class="autocomplete history">
+                            <li data-search="0"> 398<i> 9350004 Jérusalem (Israël)</i></li>
+                            <li class="copy"><a href="http://www.openstreetmap.org/copyright" target="new">© OpenStreetMap contributors</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div class="button-70" style="z-index:1;" id="location-button">
+                    <input type="button" value="📍 Get current location" id="location-button" />
+                </div>
+
+                <script>
+                    var lat = 0;
+                    var long = 0;
+
+                    var layers = [new ol.layer.Tile({ source: new ol.source.OSM() })];
+
+                    var map = new ol.Map({
+                        target: 'map',
+                        view: new ol.View({
+                            zoom: 5,
+                            center: [166326, 5992663]
+                        }),
+                        interactions: ol.interaction.defaults({ altShiftDragRotate: false, pinchRotate: false }),
+                        layers: layers
+                    });
+
+                    var search = new ol.control.SearchPhoton({
+                        lang: "fr",
+                        reverse: true,
+                        position: true
+                    });
+                    map.addControl(search);
+
+                    var markers;
+                    search.on('select', function (e) {
+
+                        map.getView().animate({
+                            center: e.coordinate,
+                            zoom: Math.max(map.getView().getZoom(), 16)
+                        });
+                        loc(e.coordinate);
+                    });
+
+
+
+                    function loc(e) {
+                        lat = e[0];
+                        long = e[1];
+                        updateValue(lat, long);
+                        //console.log(lat, long); //MARKED
+                        if (markers) {
+                            map.removeLayer(markers)
+                        }
+
+                        markers = new ol.layer.Vector({
+                            source: new ol.source.Vector(),
+                            style: new ol.style.Style({
+                                image: new ol.style.Icon({
+                                    anchor: [0.5, 1],
+                                    src: 'https://ucarecdn.com/4b516de9-d43d-4b75-9f0f-ab0916bd85eb/marker.png' // => https://app.uploadcare.com/projects/c05bbeb5e1a61e862903/files/7110cd57-b0ee-4833-bcd1-ff0343dd01cc/?limit=100&ordering=-datetime_uploaded
+                                })
+                            })
+                        });
+
+                        map.addLayer(markers);
+
+                        var marker = new ol.Feature(new ol.geom.Point(e));
+                        markers.getSource().addFeature(marker);
+                    }
+
+                    document.querySelector("#location-button").addEventListener("click", function (e) {
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(function (position) {
+                                console.log(position["coords"]["latitude"], position["coords"]["longitude"]); //MARKED
+                                if (markers) {
+                                    map.removeLayer(markers)
+                                }
+
+                                lat = position["coords"]["latitude"];
+                                long = position["coords"]["longitude"];
+                                markers = new ol.layer.Vector({
+                                    source: new ol.source.Vector(),
+                                    style: new ol.style.Style({
+                                        image: new ol.style.Icon({
+                                            anchor: [0.5, 1],
+                                            src: 'https://ucarecdn.com/4b516de9-d43d-4b75-9f0f-ab0916bd85eb/marker.png' // => https://app.uploadcare.com/projects/c05bbeb5e1a61e862903/files/7110cd57-b0ee-4833-bcd1-ff0343dd01cc/?limit=100&ordering=-datetime_uploaded
+                                        })
+                                    })
+                                });
+
+                                map.addLayer(markers);
+
+                                var marker = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([position.coords.latitude, position.coords.longitude])));
+                                markers.getSource().addFeature(marker);
+                            });
+                        }
+                        else {
+                            alert("Your browser does not support geolocation");
+                        }
+                    });
+
+                    function updateValue(lat, long) {
+                        document.getElementById("lat").value = lat;
+                        document.getElementById("long").value = long;
+                    }
+                </script>
+
+                <div class="form-group">
+                    <input type="submit" id="AddReportToDB" value="Add Report" class="btn btn-primary" />
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+}
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+    <style>
+        .button-70 #location-button {
+            background: none;
+            border: none;
+            transform: scale(2)
+        }
+
+        .button-70 {
+            transform: scale(0.7);
+            background-image: linear-gradient(#0dccea, #0d70ea);
+            border: 0;
+            border-radius: 4px;
+            box-shadow: rgba(0, 0, 0, .3) 0 5px 15px;
+            box-sizing: border-box;
+            color: #fff;
+            cursor: pointer;
+            font-family: Montserrat,sans-serif;
+            font-size: .9em;
+            margin: 5px;
+            padding: 10px 15px;
+            text-align: center;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+    </style>
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

@@ -1,0 +1,294 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using System;
+@using System.IO;
+@using System.Linq;
+@using System.Threading;
+@using System.Collections.Generic;
+
+<link rel="stylesheet" href="~/css/ol.css">
+<link rel="stylesheet" href="~/css/ol-ext.css">
+
+<link rel="stylesheet" href="~/css/ReportImagesStyle.css"/>
+
+<script src="~/js/ol.js"></script>
+
+
+<div id="map" style="position: fixed; top: 62.5px; left: 0; bottom: 65px; right: 0; z-index:-1"></div>
+
+<style>
+    .ol-zoom {
+        top: 2.5%;
+    }
+</style>
+
+
+<script type="text/javascript">
+
+    var layers = [new ol.layer.Tile({ source: new ol.source.OSM() })];
+
+    var map = new ol.Map({
+        target: 'map',
+        view: new ol.View({
+            zoom: 5,
+            center: [166326, 5992663]
+        }),
+        interactions: ol.interaction.defaults({ altShiftDragRotate: false, pinchRotate: false }),
+        layers: layers
+    });
+
+    const options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+    };
+
+    
+
+    // Vector Feature Popup logic
+    map.on('click', function (e) {
+        map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
+            //console.log(feature.getId());
+            
+            togglePopup(feature.getId());
+            resetCurrent();
+            handleImages(feature.getId());
+        })
+    })
+
+</script>
+
+<script>
+
+    var current = 0;
+
+    function resetCurrent(){
+        current = 0;
+    }
+
+    function handleImages(uniqeId){
+        const div = document.getElementById("M_Images_Of_Report_Number_"+uniqeId);
+        if (div){
+            const Elements = div.children; //Here, I need the list;
+            console.log(Elements.length)
+            for (let i = 0; i < Elements.length; i++) {
+                if (i == 0) { continue; }
+                else { Elements[i].style.display = "none";  }
+            }
+        }
+        return null; 
+
+    }
+
+    function Next(uniqeId){
+        //console.log(current);
+        const div = document.getElementById("M_Images_Of_Report_Number_" + uniqeId);
+        if (div){
+            const Elements = div.children;
+
+            for(let i = current; i < Elements.length; i++){
+                if (current === Elements.length) {break;} //Not Procced if in last image.
+                if (Elements[i].style.display === "none"){
+                    //console.log("Hidden: ", Elements[i].id.substr(Elements[i].id.length - 1));
+                    var currentIndex = Elements[i].id.split('_')
+                    var index = Elements[i].id.substr(Elements[i].id.length - currentIndex[1].length);
+                    console.log(index)
+                    Elements[index].style.display = "inline";
+                    Elements[current].style.display = "none";
+                    current += 1;
+                    break; 
+                }
+                else { console.log("Visible: ", Elements[i]); continue; }
+            }
+        }
+    }
+
+    function Prev(uniqeId){
+        //console.log(current);
+        const div = document.getElementById("M_Images_Of_Report_Number_" + uniqeId);
+
+        if (div){
+            const Elements = div.children;
+            
+            for (let i = current; i >= 0; i--) {
+                if (current === 0) { break; } //Not Procced if in first image.
+                if (Elements[i].style.display === "none") {
+                    //console.log("Hidden: ", Elements[i].id.substr(Elements[i].id.length - 1));
+                    var currentIndex = Elements[i].id.split('_')
+                    var index = Elements[i].id.substr(Elements[i].id.length - currentIndex[1].length);
+                    console.log(index)
+                    Elements[index].style.display = "inline";
+                    Elements[current].style.display = "none";
+                    current -= 1;
+                    break;
+                }
+                else { console.log("Visible: ", Elements[i]); continue; }
+            }
+        }
+    }
+
+</script>
+
+
+@{
+    if (Model != null)
+    {
+        foreach (var _Data in Model)
+        {
+            Console.WriteLine();
+            <div class="popup" id="overlay-container-@_Data.Id">
+                <div class="overlay">
+                    <div class="content">
+                        <div class="close-btn" onclick="togglePopup(@_Data.Id)">&times;</div>
+                        <h3><u>Category</u>: @_Data.category</h3><br />
+                        <h5><u>Title</u>: @_Data.title</h5>
+
+                        <u>Description</u>: <br /> <textarea disabled cols="50" rows="10" style="resize:none; background: none; border:hidden" class="accept-policy"> @_Data.remarks </textarea>   <br />
+
+                        <p style="position:absolute; top:50%; left:33%;"><b>Urgence</b>: @_Data.statUrgence <br /></p>
+
+                        <br />
+
+                        <div id="slideshow-container" style="height:200px; width:380px; display: flex; overflow: hidden;">
+
+                            @{
+                                try{
+                                    string @path = @_Data.path;
+                                    string ImgPath = @path.Substring(@path.IndexOf("Files") - 1, (@path.Length - (@path.IndexOf("Files") - 1)));
+                                    string[] ImgPathArray = ImgPath.Split('\\');
+
+                                    string[] filePaths = Directory.GetFiles(@path); // _Data.path
+                                    if (filePaths.Length > 1)
+                                    {
+                                        int imageIndex = 0;
+                                        <div id="M_Images_Of_Report_Number_@_Data.Id" style="height:200px; width:380px; display: flex; overflow: hidden; position:relative; text-align:center; left:1.5%;">
+                                            @foreach (var file in filePaths)
+                                            {
+                                                List<string> set1 = path.Split('\\').Distinct().ToList();
+                                                List<string> set2 = file.Split('\\').Distinct().ToList();
+
+                                                var diff = set2.Count() > set1.Count() ? set2.Except(set1).ToList() : set1.Except(set2).ToList();
+
+
+                                                <img id="IMG_@imageIndex" style="display: block; margin-left: auto; margin-right: auto; width: auto;"
+                                                     src="~/@string.Join("/", ImgPathArray).Remove(0,1)/@string.Join("", diff)" />
+                                                imageIndex++;
+                                            }
+                                        </div>
+                                        <br />
+                                        <div class="align-bottom" style="z-index:10; position:absolute; top:57.2%; left:40%; transform: scale(0.75)">
+                                            <button class="prev" onclick="Prev(@_Data.Id)" style="position:relative; right:180px; border:none; color: #000000;"><b>&#10094;</b></button>
+                                            <button class="next" onclick="Next(@_Data.Id)" style="position:relative; left:180px; border:none; color: #000000;"><b>&#10095;</b></button>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        List<string> set1 = path.Split('\\').Distinct().ToList();
+                                        List<string> set2 = filePaths[0].Split('\\').Distinct().ToList();
+
+                                        var diff = set2.Count() > set1.Count() ? set2.Except(set1).ToList() : set1.Except(set2).ToList();
+
+                                        <div id="S_Image_Of_Report_Number_@_Data.Id" style="height:200px; width:380px; display: flex; overflow: hidden;">
+                                            <img style="display: block; margin-left: auto; margin-right: auto; width: auto;"
+                                                 src="~/@string.Join("/", ImgPathArray).Remove(0,1)/@string.Join("", diff)" />
+                                        </div>
+                                    }
+                                }
+                                catch (NullReferenceException e){
+                                    Console.WriteLine(e.Message);
+                                }
+
+                            }
+                        </div>
+                        <br />
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript">
+                markers = new ol.layer.Vector({
+                    source: new ol.source.Vector(),
+                    style: new ol.style.Style({
+                        image: new ol.style.Icon({
+                            anchor: [0.5, 1],
+                            src: 'https://ucarecdn.com/4b516de9-d43d-4b75-9f0f-ab0916bd85eb/marker.png' // => https://app.uploadcare.com/projects/c05bbeb5e1a61e862903/files/7110cd57-b0ee-4833-bcd1-ff0343dd01cc/?limit=100&ordering=-datetime_uploaded
+                        })
+                    })
+                });
+
+                map.addLayer(markers);
+
+                var marker = new ol.Feature(new ol.geom.Point([parseFloat(@_Data.coordLat), parseFloat(@_Data.coordLong)]));
+                marker.setId(@_Data.Id);
+                //console.log(marker.getId());
+                markers.getSource().addFeature(marker);
+            </script>
+        }
+}
+else
+{
+    <script>console.log("LOLLLLLLL YOU SUCK");</script>
+}
+}
+
+@{
+    if (Model[0].reDirectID != null){
+        Console.WriteLine(Model[0].reDirectID + "REEEEEEEEEEEEEEEEEEEEE");
+        <script>    
+            console.log(document.getElementById("overlay-container-" + @Model[0].reDirectID))
+            document.getElementById("overlay-container-" + @Model[0].reDirectID).classList.toggle("active");
+            handleImages(@Model[0].reDirectID);
+        </script>
+    }
+}
+
+<style>
+    .popup .overlay {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0,0,0,0.5);
+        z-index: 1;
+        display: none;
+    }
+
+        .popup .content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        background: #fff;
+        width: auto;
+        height: auto;
+        z-index: 2;
+        text-align: center;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .popup .close-btn {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        width: 30px;
+        height: 30px;
+        background: #222;
+        color: #fff;
+        font-size: 25px;
+        font-weight: 600;
+        line-height: 23.5px;
+        text-align: center;
+        border-radius: 50%;
+    }
+
+    .popup.active .overlay {
+        display: block;
+    }
+
+    .popup.active .content {
+        transition: all 300ms ease-in-out;
+        transform: translate(-50%, -50%) scale(1);
+    }
+</style>

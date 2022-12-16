@@ -48,9 +48,7 @@
 
     // Vector Feature Popup logic
     map.on('click', function (e) {
-        map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
-            //console.log(feature.getId());
-            
+        map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {            
             togglePopup(feature.getId());
             resetCurrent();
             handleImages(feature.getId());
@@ -71,7 +69,6 @@
         const div = document.getElementById("M_Images_Of_Report_Number_"+uniqeId);
         if (div){
             const Elements = div.children; //Here, I need the list;
-            console.log(Elements.length)
             for (let i = 0; i < Elements.length; i++) {
                 if (i == 0) { continue; }
                 else { Elements[i].style.display = "none";  }
@@ -82,7 +79,6 @@
     }
 
     function Next(uniqeId){
-        //console.log(current);
         const div = document.getElementById("M_Images_Of_Report_Number_" + uniqeId);
         if (div){
             const Elements = div.children;
@@ -90,22 +86,19 @@
             for(let i = current; i < Elements.length; i++){
                 if (current === Elements.length) {break;} //Not Procced if in last image.
                 if (Elements[i].style.display === "none"){
-                    //console.log("Hidden: ", Elements[i].id.substr(Elements[i].id.length - 1));
                     var currentIndex = Elements[i].id.split('_')
                     var index = Elements[i].id.substr(Elements[i].id.length - currentIndex[1].length);
-                    console.log(index)
                     Elements[index].style.display = "inline";
                     Elements[current].style.display = "none";
                     current += 1;
                     break; 
                 }
-                else { console.log("Visible: ", Elements[i]); continue; }
+                else { continue; }
             }
         }
     }
 
     function Prev(uniqeId){
-        //console.log(current);
         const div = document.getElementById("M_Images_Of_Report_Number_" + uniqeId);
 
         if (div){
@@ -114,16 +107,14 @@
             for (let i = current; i >= 0; i--) {
                 if (current === 0) { break; } //Not Procced if in first image.
                 if (Elements[i].style.display === "none") {
-                    //console.log("Hidden: ", Elements[i].id.substr(Elements[i].id.length - 1));
                     var currentIndex = Elements[i].id.split('_')
                     var index = Elements[i].id.substr(Elements[i].id.length - currentIndex[1].length);
-                    console.log(index)
                     Elements[index].style.display = "inline";
                     Elements[current].style.display = "none";
                     current -= 1;
                     break;
                 }
-                else { console.log("Visible: ", Elements[i]); continue; }
+                else { continue; }
             }
         }
     }
@@ -220,22 +211,15 @@
 
                 var marker = new ol.Feature(new ol.geom.Point([parseFloat(@_Data.coordLat), parseFloat(@_Data.coordLong)]));
                 marker.setId(@_Data.Id);
-                //console.log(marker.getId());
                 markers.getSource().addFeature(marker);
             </script>
         }
-}
-else
-{
-    <script>console.log("LOLLLLLLL YOU SUCK");</script>
 }
 }
 
 @{
     if (Model[0].reDirectID != null){
-        Console.WriteLine(Model[0].reDirectID + "REEEEEEEEEEEEEEEEEEEEE");
         <script>    
-            console.log(document.getElementById("overlay-container-" + @Model[0].reDirectID))
             document.getElementById("overlay-container-" + @Model[0].reDirectID).classList.toggle("active");
             handleImages(@Model[0].reDirectID);
         </script>

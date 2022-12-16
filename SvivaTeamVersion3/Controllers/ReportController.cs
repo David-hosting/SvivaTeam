@@ -43,13 +43,7 @@ namespace SvivaTeamVersion3.Controllers
         [HttpGet]
         public IActionResult Index(string id)
         {
-            Console.WriteLine(id);
             fetchData(id);
-            foreach (var report in reports)
-            {
-                Console.WriteLine(report.reDirectID);
-            }
-
             return View(reports);
         }
 

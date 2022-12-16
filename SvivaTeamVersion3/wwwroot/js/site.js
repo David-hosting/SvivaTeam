@@ -5,7 +5,6 @@
 var mySelect = document.getElementById("lang-switch");
 mySelect.onchange = (event) => {
     var choosen_language = event.target.value;
-    //console.log(choosen_language);
 
     var About_Title = document.getElementById("AboutProjectTitleText");
     var About_Body = document.getElementById("AboutProjectBody");
@@ -112,48 +111,18 @@ function show(category) {
 
 function confirmDelete(uniqeId, isDeleteClicked) {
 
-    console.log(uniqeId, isDeleteClicked)
-
     let deleteSpan = document.getElementById('deleteSpan_' + uniqeId);
     let confirmDeleteSpan = document.getElementById('confirmDeleteSpan_' + uniqeId);
 
     if (isDeleteClicked) {
-        console.log(1)
         deleteSpan.style = "display:none"
         confirmDeleteSpan.style = "display:inline"
     } else {
-        console.log(2)
         deleteSpan.style = "display:inline"
         confirmDeleteSpan.style = "display:none"
     }
 }
 
 function togglePopup(id) {
-    console.log("init")
     document.getElementById("overlay-container-" + id).classList.toggle("active");
-}
-
-
-function togglePublish(id) {
-    let token = '@csrf';
-    token = token.substr(42, 40);
-    $.ajax({
-        type: "POST",
-        url: `https://localhost:44392/Report/Index`,
-        data: { "id": id.toString() },
-        dataType: "json",
-        success: function (data, textStatus) {
-            if (data.redirect) {
-                // data.redirect contains the string URL to redirect to
-                window.location.href = data.redirect + "/" + theUniqueId;
-            } else {
-                // data.form contains the HTML for the replacement form
-                $("#myform").replaceWith(data.form);
-            }
-        },
-        error: function (err) {
-            console.log($($(err.responseText)[1]).text())
-            debugger;
-        }
-    });
 }

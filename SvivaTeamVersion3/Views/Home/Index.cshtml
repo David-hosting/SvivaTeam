@@ -113,16 +113,16 @@
                                         List<string> set2 = file.Split('\\').Distinct().ToList();
 
                                         var diff = set2.Count() > set1.Count() ? set2.Except(set1).ToList() : set1.Except(set2).ToList();
-                                        <form asp-route-Id="@data.Id" method="post">
-                                            <a asp-action="Index" asp-controller="Report" asp-route-id="@data.Id">
-                                                <li id="@data.Id" class="w3-padding-16">
-                                                    <img width="auto" height="auto" id="IMG_@index" style="max-width:50px; max-height:50px; width: auto; height: auto;" src="~/@string.Join("/", ImgPathArray).Remove(0,1)/@string.Join("", diff)" alt="Image" class="w3-left w3-margin-right" style="width:50px">
-                                                    <span class="w3-large">@data.category</span> <span class="w3-medium">@data.title</span><br>
-                                                    @if (data.remarks.Length <= 10) { <span>@data.remarks</span> }
+                                            <form asp-route-Id="@data.Id" method="post">
+                                                <a asp-action="Index" asp-controller="Report" asp-route-id="@data.Id">
+                                                    <li id="@data.Id" class="w3-padding-16">
+                                                        <img width="auto" height="auto" id="IMG_@index" style="max-width:50px; max-height:50px; width: auto; height: auto;" src="~/@string.Join("/", ImgPathArray).Remove(0,1)/@string.Join("", diff)" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+                                                        <span class="w3-large">@data.category</span> <span class="w3-medium">@data.title</span><br>
+                                                        @if (data.remarks.Length <= 10) { <span>@data.remarks</span> }
                                                     else { <span>@data.remarks.Substring(0,10)</span><span>...</span> } 
-                                                </li>
-                                            </a>
-                                        </form>
+                                                    </li>
+                                                </a>
+                                            </form>
                                         index++;
                                         break;
                                     }
@@ -153,46 +153,5 @@
         if(li_image_width/li_iamge_height>0.75){
             document.getElementById('IMG_'+i).style.marginTop = '3%';
         }
-    }
-
-    for (let i = 0; i < ul_elemets.length; i++){
-        var li = ul_elemets[i]
-        li.addEventListener("click", function() {
-            //Handle_Window_Transfer(li.id)
-            //togglePublish(li.id);
-        });
-    }
-
-    //async function Handle_Window_Transfer(id){
-    //    await new Promise(resolve => {
-    //        setTimeout(() => {
-    //            window.location.href = "report/index";
-    //            resolve();
-    //        }, 500)
-    //    })
-    //    console.log("Still Proccessing")
-    //    togglePopup(id)
-    //    console.log("Done!")
-    //}
-    
-    function Handle_Window_Transfer(id){
-        //window.location.href = "report/index";
-        
-        $.ajax({
-            type: "POST",
-            url: "https://localhost:44392/Report/Index",
-            data: {"id":id.toString()},
-            dataType: "json",
-            success: function (data, textStatus) {
-                if (data.redirect) {
-                    // data.redirect contains the string URL to redirect to
-                    window.location.replace(data.redirect);
-                } else {
-                    // data.form contains the HTML for the replacement form
-                    $("#my-form").replaceWith(data.form);
-                }
-            }
-        });
-    }
-        
+    }   
 </script>

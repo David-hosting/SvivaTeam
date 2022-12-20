@@ -103,12 +103,6 @@ namespace SvivaTeamVersion3.Controllers
                 return NotFound($"Unable to load user with ID '{userManager.GetUserId(User)}'.");
             }
 
-            //if (!ModelState.IsValid)
-            //{
-            //    await LoadAsync(user);
-            //    return RedirectToAction("ListUsers", "Administration");
-            //}
-
             var email = await userManager.GetEmailAsync(user);
             if (Input.NewEmail != email && Input.NewEmail != null)
             {

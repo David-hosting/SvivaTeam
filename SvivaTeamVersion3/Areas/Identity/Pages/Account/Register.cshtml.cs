@@ -71,6 +71,13 @@ namespace SvivaTeamVersion3.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+
+            //Experimental
+            [Required]
+            [Display(Name = "")]
+            public bool AcceptedTOS { get; set; }
+
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -90,7 +97,8 @@ namespace SvivaTeamVersion3.Areas.Identity.Pages.Account
                     UserName = Input.Email,
                     Email = Input.Email,
                     FirstName = Input.FirstName,
-                    LastName = Input.LastName
+                    LastName = Input.LastName,
+                    AcceptedTOS = Input.AcceptedTOS
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)

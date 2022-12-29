@@ -91,17 +91,14 @@ category.addEventListener("click", function () {
 
 function show(category) {
     if (category == "Road_Problems") {
-        console.log('1');
         RP.style = " display: inline"
         UP.style = "display: none"
         Other.style = " display: none"
     } if (category == "Urban_Problems") {
-        console.log('2');
         RP.style = " display: none"
         UP.style = "display: inline"
         Other.style = " display: none"
     } if (category == "Other") {
-        console.log('3');
         RP.style = " display: none"
         UP.style = "display: none"
         Other.style = " display: inline"

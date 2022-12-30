@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SvivaTeamVersion3.Areas.Identity.Data;
 
@@ -31,6 +33,43 @@ namespace SvivaTeamVersion3.Data
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
             }
+        }
+    }
+
+    public class MinimumAgeAttribute : ValidationAttribute
+    {
+        int _minimumAge;
+
+        public MinimumAgeAttribute(int minimumAge)
+        {
+            _minimumAge = minimumAge;
+        }
+
+        public override bool IsValid(object value)
+        {
+            DateTime date;
+            if (DateTime.TryParse(value.ToString(), out date))
+            {
+                return date.AddYears(_minimumAge) < DateTime.Now;
+            }
+
+            return false;
+        }
+    }
+
+    public class IsTrueAttribute : ValidationAttribute
+    {
+
+        bool _checkbox;
+
+        public IsTrueAttribute(bool checkbox)
+        {
+            _checkbox = checkbox;
+        }
+
+        public override bool IsValid(object value)
+        {
+            return value != null && (bool)value == true;
         }
     }
 }

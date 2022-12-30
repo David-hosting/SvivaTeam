@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using SvivaTeamVersion3.Areas.Identity.Data;
 using Microsoft.AspNetCore.Http;
+using System;
+using SvivaTeamVersion3.Data;
 
 namespace SvivaTeamVersion3.Areas.Identity.Pages.Account
 {
@@ -72,12 +74,17 @@ namespace SvivaTeamVersion3.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
+            [Required]
+            [Display(Name = "Terms of Service")]
+            [IsTrue(true, ErrorMessage = "You must agree to the Terms of Service")]
+            public bool AcceptedTOS { get; set; }
 
             //Experimental
             [Required]
-            [Display(Name = "")]
-            public bool AcceptedTOS { get; set; }
-
+            [Display(Name = "DOB")]
+            [DataType(DataType.Date, ErrorMessage = "Age must be above 13.")]
+            [MinimumAge(13)]
+            public DateTime DOB { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -98,7 +105,8 @@ namespace SvivaTeamVersion3.Areas.Identity.Pages.Account
                     Email = Input.Email,
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
-                    AcceptedTOS = Input.AcceptedTOS
+                    AcceptedTOS = Input.AcceptedTOS,
+                    DOB = Input.DOB
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
@@ -145,3 +153,4 @@ namespace SvivaTeamVersion3.Areas.Identity.Pages.Account
         }
     }
 }
+

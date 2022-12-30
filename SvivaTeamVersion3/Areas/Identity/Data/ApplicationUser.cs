@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Identity;
+using SvivaTeamVersion3.Data;
 
 namespace SvivaTeamVersion3.Areas.Identity.Data
 {
@@ -22,9 +23,14 @@ namespace SvivaTeamVersion3.Areas.Identity.Data
 
         //Experimental
         [Required]
+        [IsTrue(true, ErrorMessage = "You must agree to the Terms of Service")]
         //[Display(Name = "I have read and accept the Terms of Service")]
         //[Column(TypeName = "bool")]
         public bool AcceptedTOS { get; set; }
 
+        [PersonalData]
+        [Required]
+        [MinimumAge(13)]
+        public DateTime DOB { get; set; }
     }
 }

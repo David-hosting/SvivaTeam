@@ -51,14 +51,24 @@
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
         </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Input.DOB"></label>
+                <input asp-for="Input.DOB" class="form-control" />
+                <span asp-validation-for="Input.DOB" class="text-danger"></span>
+            </div>
+        </div>
     </div>
+   
     <div class="">
-        <div class="form-group">
-            @*<label asp-for="Input.AcceptedTOS"></label>*@
+    <div class="form-group">
+            <label asp-for="Input.AcceptedTOS"></label>
             I have read and accept the <a id="show">Terms of Service</a> <input id="checkbox" asp-for="Input.AcceptedTOS" type="checkbox" />
-            <span asp-for="Input.AcceptedTOS" class="text-danger" ></span>
-        </div>    
+            <span  asp-validation-for="Input.AcceptedTOS" class="text-danger"></span>
+        </div>
     </div>
+   
     <button type="submit" class="btn btn-primary">Register</button>
 </form>
 

@@ -9,10 +9,6 @@
     box-shadow: 0 0 0 1600px rgba(0,0,0,0.65); /* dark around it */
 }
 
-.terms-box:focus {
-    
-}
-
 .terms-text p {
     word-wrap: break-word;
 }

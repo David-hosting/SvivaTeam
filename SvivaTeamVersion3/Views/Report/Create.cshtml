@@ -240,11 +240,13 @@
                     });
 
                     function updateValue(lat, long) {
+                        var submit_form = document.getElementById('AddReportToDB');
+
                         document.getElementById("lat").value = lat;
                         document.getElementById("long").value = long;
 
-                        if (document.getElementById('AddReportToDB').disabled == true){
-                            document.getElementById('AddReportToDB').disabled = false;
+                        if (submit_form.disabled == true){
+                            submit_form.disabled = false;
                             document.getElementById("SubmitStatus").title = "Submit";
                         }
                     }
@@ -253,8 +255,6 @@
                 <div class="form-group">
                     <abbr id="SubmitStatus" title="Please choose a location before you submit your report."><input type="submit" id="AddReportToDB" disabled value="Add Report" class="btn btn-primary" /></abbr>
                 </div>
-
-
             </form>
         </div>
     </div>

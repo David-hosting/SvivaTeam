@@ -89,12 +89,12 @@ namespace SvivaTeamVersion3.Controllers
             {
                 SqlCommand command = new SqlCommand(sqlStatement, connection);
 
-                command.Parameters.Add("@category", System.Data.SqlDbType.NChar, 32).Value = upload.category;
-                command.Parameters.Add("@title", System.Data.SqlDbType.NChar, 32).Value = upload.title;
-                command.Parameters.Add("@description", System.Data.SqlDbType.NVarChar, -1).Value = upload.remarks;
-                command.Parameters.Add("@statUrgence", System.Data.SqlDbType.NVarChar, -1).Value = upload.statUrgence;
-                command.Parameters.Add("@cordsLat", System.Data.SqlDbType.NChar, 100).Value = upload.coordLat;
-                command.Parameters.Add("@cordsLong", System.Data.SqlDbType.NChar, 100).Value = upload.coordLong;
+                command.Parameters.Add("@category",    SqlDbType.NChar, 32).Value    = upload.category;
+                command.Parameters.Add("@title",       SqlDbType.NChar, 32).Value    = upload.title;
+                command.Parameters.Add("@description", SqlDbType.NVarChar, -1).Value = upload.remarks;
+                command.Parameters.Add("@statUrgence", SqlDbType.NVarChar, -1).Value = upload.statUrgence;
+                command.Parameters.Add("@cordsLat",    SqlDbType.NChar, 100).Value   = upload.coordLat;
+                command.Parameters.Add("@cordsLong",   SqlDbType.NChar, 100).Value   = upload.coordLong;
 
                 var FileDic = "Files";
                 string[] Categories = { "Road_Problems", "Urban_Problems", "Other" };
@@ -112,34 +112,43 @@ namespace SvivaTeamVersion3.Controllers
 
                 foreach (var Category in Categories)
                 {
-                    if (!Directory.Exists($"{FilePath}/{Category}"))
-                        Directory.CreateDirectory($"{FilePath}/{Category}");
+                    if (!Directory.Exists($"{FilePath}/{Category}")) 
+                        Directory.CreateDirectory($"{FilePath}/{Category}"); //Createing category folders
                     else
                         break;
 
                     for (int i = 0; i < TitlesList[counter].Length; i++)
                     
                         foreach (var Title in TitlesList[counter].Where(Title => !Directory.Exists($"{FilePath}/{Category}/{Title}")))
-                            Directory.CreateDirectory($"{FilePath}/{Category}/{Title}");
+                            Directory.CreateDirectory($"{FilePath}/{Category}/{Title}"); //Createing title folders
 
                     counter++;
                 }
 
-                var RandomFolder = TextGenerator();
+                try
+                {
+                    if (upload.File.Count != 0) { 
 
-                var finalDirectory = $"{FilePath}/{upload.category}/{upload.title}/{RandomFolder}";
+                        var RandomFolder = TextGenerator();
 
-                Directory.CreateDirectory(finalDirectory);
-                foreach (var (file, filePath) in from file in upload.File
-                                                 let filePath = Path.Combine(FilePath, upload.category, upload.title, RandomFolder, file.FileName)
-                                                 select (file, filePath))
-                    using (FileStream fs = System.IO.File.Create(filePath))
-                    {
-                        file.CopyTo(fs);
+                        var finalDirectory = $"{FilePath}/{upload.category}/{upload.title}/{RandomFolder}";
+
+                        Directory.CreateDirectory(finalDirectory);
+                        foreach (var (file, filePath) in from file in upload.File
+                                                        let filePath = Path.Combine(FilePath, upload.category, upload.title, RandomFolder, file.FileName)
+                                                        select (file, filePath))
+                           using (FileStream fs = System.IO.File.Create(filePath))
+                           {
+                               file.CopyTo(fs);
+                           }
+
+                        command.Parameters.Add("@path", System.Data.SqlDbType.NVarChar, -1).Value = Path.Combine(FilePath, upload.category, upload.title, RandomFolder); //finalDirectory
                     }
-
-                command.Parameters.Add("@path", System.Data.SqlDbType.NVarChar, -1).Value = Path.Combine(FilePath, upload.category, upload.title, RandomFolder); //finalDirectory
-
+                }
+                catch (Exception _)
+                {
+                    command.Parameters.Add("@path", System.Data.SqlDbType.NVarChar, -1).Value = Path.Combine(FilePath, "No Images were uploaded.");
+                }
                 try
                 {
                     connection.Open();
@@ -160,7 +169,8 @@ namespace SvivaTeamVersion3.Controllers
             if (id != null)
                 reports.Add(new ReportModel()
                 {
-                    reDirectID = id
+                    reDirectID = id,
+                    path = Path.Combine("Files", "No Images were uploaded.") //Anti error tank. xD
                 });
             try
             {

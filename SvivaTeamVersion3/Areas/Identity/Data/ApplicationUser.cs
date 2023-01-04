@@ -21,7 +21,6 @@ namespace SvivaTeamVersion3.Areas.Identity.Data
         [Column(TypeName = "nvarchar(100)")]
         public string LastName { get; set; }
 
-        //Experimental
         [Required]
         [IsTrue(true, ErrorMessage = "You must agree to the Terms of Service")]
         //[Display(Name = "I have read and accept the Terms of Service")]

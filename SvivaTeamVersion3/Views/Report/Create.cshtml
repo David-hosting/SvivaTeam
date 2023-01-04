@@ -242,11 +242,16 @@
                     function updateValue(lat, long) {
                         document.getElementById("lat").value = lat;
                         document.getElementById("long").value = long;
+
+                        if (document.getElementById('AddReportToDB').disabled == true){
+                            document.getElementById('AddReportToDB').disabled = false;
+                            document.getElementById("SubmitStatus").title = "Submit";
+                        }
                     }
                 </script>
 
                 <div class="form-group">
-                    <input type="submit" id="AddReportToDB" value="Add Report" class="btn btn-primary" />
+                    <abbr id="SubmitStatus" title="Please choose a location before you submit your report."><input type="submit" id="AddReportToDB" disabled value="Add Report" class="btn btn-primary" /></abbr>
                 </div>
 
 

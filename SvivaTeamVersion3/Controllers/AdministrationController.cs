@@ -196,17 +196,6 @@ namespace SvivaTeamVersion3.Controllers
                 try
                 {
 
-                    //throw new Exception("Text Exception");
-
-                    /*
-                    logger.LogTrace("Trace Log");
-                    logger.LogDebug("Debug log");
-                    logger.LogInformation("Information log");
-                    logger.LogWarning("Warning log");
-                    logger.LogError("Error log");
-                    logger.LogCritical("Critical log");
-                    */
-
                     var result = await roleManager.DeleteAsync(await role);
 
                     if (result.Succeeded)

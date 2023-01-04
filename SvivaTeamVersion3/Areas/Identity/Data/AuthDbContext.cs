@@ -59,7 +59,6 @@ namespace SvivaTeamVersion3.Data
 
     public class IsTrueAttribute : ValidationAttribute
     {
-
         bool _checkbox;
 
         public IsTrueAttribute(bool checkbox)

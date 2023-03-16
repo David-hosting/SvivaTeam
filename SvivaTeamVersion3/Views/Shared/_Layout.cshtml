@@ -1,12 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using SvivaTeamVersion3.Areas.Identity.Data;
 @inject SignInManager<ApplicationUser> signInManager;
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"] - SvivaTeam</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
@@ -14,48 +13,57 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" rel="stylesheet">
+
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav id="navigation-bar" class="navbar bg-white border-bottom box-shadow mb-3">
+            @*navbar-expand-md navbar-expand-lg navbar-expand-xl*@
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SvivaTeam</a>
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                    </li>
-                    @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-                    {
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Manage
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a asp-action="ListUsers" asp-controller="Administration"
-                                   class="dropdown-item">Users</a>
-                                <a asp-action="ListRoles" asp-controller="Administration"
-                                   class="dropdown-item">Roles</a>
-                            </div>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" style="color:#000">SvivaTeam</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                    }
-                </ul>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                        @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color:#000">
+                                    Manage
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a asp-action="ListUsers" asp-controller="Administration"
+                                   class="dropdown-item">Users</a>
+                                    <a asp-action="ListRoles" asp-controller="Administration"
+                                   class="dropdown-item">Roles</a>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                    <div class="ml-auto">
+                        <partial name="_LoginPartial" />
+                    </div>
+                    <div>
+                        <h6 style="visibility:hidden">Hidden text.</h6>
+                    </div>
+                    <div>
+                        <select id="lang-switch" class="navbar-nav">
+                            <option id="lan1" value="EN">🌐 English</option>
+                            <option id="lan2" value="HE" selected>🌐 Hebrew</option>
+                        </select>
+                    </div>
                 </div>
-                <div>
-                    <h6 style="visibility:hidden">Hidden text.</h6>
-                </div>
-                <select id="lang-switch" class="navbar-nav">
-                    <option id="lan1" value="EN">🌐 English</option>
-                    <option id="lan2" value="HE" selected>🌐 Hebrew</option>
-                </select>
             </div>
         </nav>
-
     </header>
     <div class="container">
         <main role="main" class="pb-3">
@@ -64,13 +72,122 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - SvivaTeam - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> <a asp-area="" asp-controller="Home" asp-action="TermsOfService">TOS</a>
+        <div class="col-12 col-md-8 col-lg-6 text-center">
+            <div class="row justify-content-center align-items-center">
+                &copy; 2022 - SvivaTeam - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> | <a asp-area="" asp-controller="Home" asp-action="TermsOfService">TOS</a>
+            </div>
         </div>
     </footer>
+
+    <script>
+        function updateNav(nav) {
+            if (window.screen.width >= 1200) {
+                nav.classList.remove('navbar-light')
+                nav.classList.add('navbar-expand-sm')
+                nav.classList.add('navbar-toggleable-sm')
+            } else {
+                nav.classList.remove('navbar-expand-sm')
+                nav.classList.remove('navbar-toggleable-sm')
+                nav.classList.add('navbar-light')
+            }
+        }
+
+        var nav = document.getElementById("navigation-bar");
+
+        updateNav(nav)
+
+        window.addEventListener('resize', function (event) {
+            updateNav(nav)
+        });
+    </script>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+<style>
+    .navbar {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+
+    .navbar-nav {
+        margin-left: auto;
+    }
+
+    .nav-link {
+        font-size: 1.2rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    .footer {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        text-align: center;
+    }
+
+
+    @@media only screen and (max-width: 767px) {
+        .navbar {
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+        }
+
+        .navbar-brand {
+            font-size: 1.2rem;
+        }
+
+        .navbar-nav {
+            margin-left: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            font-size: 1rem;
+            margin-left: 0.5rem;
+            margin-right: 0.5rem;
+        }
+
+        .footer {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+    }
+
+    @@media only screen and (min-width: 768px) and (max-width: 991px) {
+        .navbar {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+        }
+
+        .navbar-nav {
+            margin-left: auto;
+        }
+
+        .nav-link {
+            font-size: 1.2rem;
+            margin-left: 1rem;
+            margin-right: 1rem;
+        }
+
+        .footer {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            text-align: center;
+        }
+    }
+</style>
+

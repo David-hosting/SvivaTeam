@@ -97,10 +97,10 @@ namespace SvivaTeamVersion3.Controllers
                 command.Parameters.Add("@cordsLong",   SqlDbType.NChar, 100).Value   = upload.coordLong;
 
                 var FileDic = "Files";
-                string[] Categories = { "Road_Problems", "Urban_Problems", "Other" };
+                string[] Categories         = { "Road_Problems", "Urban_Problems", "Other" };
                 string[] TitlesRoadProblems = { "Accident", "Disruptive_object", "Disruptive_parking", "Defective_indication", "Other" };
                 string[] TitleUrbanProblems = { "Neighborhood_problem", "Pollution", "Animals", "Distruptive_object", "Tag", "Other" };
-                string[] Other = { "Other" };
+                string[] Other              = { "Other" };
                 List<string[]> TitlesList = new List<string[]>() { TitlesRoadProblems, TitleUrbanProblems, Other };
                 
                 string FilePath = Path.Combine(hostingEnv.WebRootPath, FileDic);
@@ -113,7 +113,7 @@ namespace SvivaTeamVersion3.Controllers
                 foreach (var Category in Categories)
                 {
                     if (!Directory.Exists($"{FilePath}/{Category}")) 
-                        Directory.CreateDirectory($"{FilePath}/{Category}"); //Createing category folders
+                        Directory.CreateDirectory($"{FilePath}/{Category}"); //Createing category folder
                     else
                         break;
 

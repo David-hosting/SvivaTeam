@@ -23,6 +23,7 @@ mySelect.onchange = (event) => {
     var contact = document.getElementById("contact-us");
 
     var paragraph1 = document.getElementById("para1");
+    var paragraph1_1 = document.getElementById("para1.1");
 
     function change_language_main_screen_EN() {
         About_Body.innerHTML = "This project is an entrepreneurship environmental, social, long-lasting project. Its purpose is to make accessible and efficient the organization of cleaning groups. If until today we organized beach cleaning groups through Facebook, and it was sometimes difficult to find an available group or in an area convenient for everyone. This interface offers a website that will centralize all the organizations in a notification map and thus also establish a faster contact with the nature authorities.";
@@ -71,15 +72,19 @@ mySelect.onchange = (event) => {
     function change_language_privacyPolicy_screen_EN() {
         Main_Title.innerHTML = "Privacy Policy for SvivaTeam";
         
-        paragraph1.innerHTML = "At <a style = \"cursor: pointer; color: #316beb; text - decoration: underline;\" onclick=\"location.replace('Index');\">SvivaTeam</a> we consider the privacy of our visitors to be extremely important. This privacy policy document describes in detail the types of personal information is collected and recorded by <a style = \"cursor: pointer; color: #316beb; text - decoration: underline;\" onclick=\"location.replace('Index');\">SvivaTeam</a> and how we use it.";
+        paragraph1.innerHTML = "At <a style = \"cursor: pointer; color: #316beb; text - decoration: underline;\" onclick=\"location.replace('Index');\">SvivaTeam</a> we consider the privacy of our visitors to be extremely important. This privacy policy document describes in detail the types of personal information is collected and recorded by <a style = \"cursor: pointer; color: #316beb; text - decoration: underline;\" onclick=\"location.replace('Index');\">SvivaTeam</a>";
+        paragraph1_1.innerHTML = " and how we use it."
         paragraph1.style = "text-align : left";
+
     }
 
     function change_language_privacyPolicy_screen_HE() {
         Main_Title.innerHTML = "SvivaTeam מדיניות פרטיות עבור";
 
-        paragraph1.innerHTML = ".ואיך אנחנו משתמשים בה .<a style = \"cursor: pointer; color: #316beb; text - decoration: underline;\" onclick=\"location.replace('Index');\">SvivaTeam</a> אנחנו מחשבים את פרטיות הגולשים שלנו מאוד חשובה. מסמך זה  מתאר בפירוט את האינפורמציה האישית שנאספת ומתועדת על ידי <a style = \"cursor: pointer; color: #316beb; text - decoration: underline;\" onclick=\"location.replace('Index');\">SvivaTeam</a>ב";
+        paragraph1.innerHTML = "<a style = \"cursor: pointer; color: #316beb; text - decoration: underline;\" onclick=\"location.replace('Index');\">SvivaTeam</a> אנחנו מחשבים את פרטיות הגולשים שלנו מאוד חשובה. מסמך זה  מתאר בפירוט את האינפורמציה האישית שנאספת ומתועדת על ידי <a style = \"cursor: pointer; color: #316beb; text - decoration: underline;\" onclick=\"location.replace('Index');\">SvivaTeam</a>ב";
+        paragraph1_1.innerHTML = ".ואיך אנחנו משתמשים בה "
         paragraph1.style = "text-align: right";
+
     }
 
     var error = 0;

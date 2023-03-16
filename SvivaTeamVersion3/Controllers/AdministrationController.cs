@@ -158,6 +158,68 @@ namespace SvivaTeamVersion3.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> ManageUserRoles(string userId)
+        {
+            ViewBag.userId = userId;
+
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
+                return View("NotFound");
+            }
+
+            var model = new List<UserRolesModel>();
+
+            foreach(var role in roleManager.Roles)
+            {
+                var userRoleModel = new UserRolesModel
+                {
+                    RoleId = role.Id,
+                    RoleName = role.Name
+                };
+                if (await userManager.IsInRoleAsync(user, role.Name)) userRoleModel.IsSelected = true;
+                else userRoleModel.IsSelected = false;
+
+                model.Add(userRoleModel);
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ManageUserRoles(List<UserRolesModel> model, string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id = {userId} cannot be found";
+                return View("NotFound");
+            }
+
+            var roles = await userManager.GetRolesAsync(user);
+            var result = await userManager.RemoveFromRolesAsync(user, roles);
+
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Cannot remove user's existing roles");
+                return View(model);
+            }
+
+            result = await userManager.AddToRolesAsync(user,
+                                                       model.Where(x => x.IsSelected).Select(y => y.RoleName));
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError("", "Cannot add selected roles to user");
+                return View(model);
+            }
+
+            return RedirectToAction("EditUser", new {Id = userId});
+        }
+
         [HttpPost]
         public async Task<IActionResult> DeleteUser(string id)
         {
@@ -223,7 +285,7 @@ namespace SvivaTeamVersion3.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IActionResult ListUsers()
         {
             var users = userManager.Users;
@@ -231,7 +293,7 @@ namespace SvivaTeamVersion3.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IActionResult CreateRole()
         {
             return View();
@@ -263,7 +325,7 @@ namespace SvivaTeamVersion3.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult ListRoles()
         {
@@ -271,7 +333,7 @@ namespace SvivaTeamVersion3.Controllers
             return View(roles);
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> EditUser(string id)
         {
@@ -300,7 +362,7 @@ namespace SvivaTeamVersion3.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> EditRoles(string id)
         {
@@ -359,7 +421,7 @@ namespace SvivaTeamVersion3.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditUsersInRole(string roleId)
         {
             ViewBag.roleId = roleId;

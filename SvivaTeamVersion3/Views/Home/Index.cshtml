@@ -16,31 +16,52 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
     <style>
         body, h1, h2, h3, h4, h5 {
             font-family: "Raleway", sans-serif
         }
+
+        @@media screen and (min-width: 222px) and (max-width: 280px) {
+            .w3-button{
+                max-width: 100%;
+                align-content: center;
+                align-items: center;
+                align-self: center;
+            }
+
+            .btn-text {
+                max-width: 100%;
+                /*transform: scale(0.5);*/
+            }
+        }
+
+
+        @@media screen and (max-width: 221px){
+            .w3-row { 
+                display: none;
+            }
+        }
+
     </style>
 </head>
 <body class="w3-light-grey">
 
-    <div class="w3-content" style="max-width:1400px">
+    <div class="w3-content"> @*style="max-width:1400px"*@
 
         <header class="w3-container w3-center w3-padding-32">
             <h1><b>SvivaTeam</b></h1>
             <p id="subtitle">יוצרים עולם טוב יותר בעזרת עבודת צוות</p>
         </header>
 
-        <div class="w3-row">
-
+        <div class="w3-row" style="">
             <div class="w3-col l8 s12">
                 <div class="w3-card-4 w3-margin w3-white">
                     <img src="/HomeImages/woods.jpg" alt="Nature" style="width:100%">
                     <div class="w3-container">
-                        <h3 id="ReportMapTitleTextAlign" style="text-align: right"><b><u id="ReportMapTitleText">מפת ההתראות</u></b></h3>
+                        <p><h3 id="ReportMapTitleTextAlign" style="text-align: right"><b><u id="ReportMapTitleText">מפת ההתראות</u></b></h3></p>
                     </div>
 
                     <div class="w3-container">
@@ -49,7 +70,7 @@
                         </p>
                         <div class="w3-row">
                             <div class="w3-col m8 s12">
-                                <p><button onclick="window.location.href='Report/Index'" class="w3-button w3-padding-large w3-white w3-border"><b>SEE MAP »</b></button></p>
+                                <p><button onclick="window.location.href='Report/Index'" class="w3-button w3-padding-large w3-white w3-border"><b class="btn-text">SEE MAP »</b></button></p>
                             </div>
                         </div>
                     </div>
@@ -68,7 +89,7 @@
                         </p>
                         <div class="w3-row">
                             <div class="w3-col m8 s12">
-                                <p><button onclick="MoveToCreateReport()" type="submit" class="w3-button w3-padding-large w3-white w3-border"><b>ADD NEW REPORT »</b></button></p>
+                                <p><button onclick="MoveToCreateReport()" type="submit" class="w3-button w3-padding-large w3-white w3-border"><b class="btn-text">ADD NEW REPORT »</b></button></p>
                                 <script>
                                     function MoveToCreateReport() {
                                         window.location.href ="Report/Create";
@@ -113,27 +134,28 @@
                                         List<string> set2 = file.Split('\\').Distinct().ToList();
 
                                         var diff = set2.Count() > set1.Count() ? set2.Except(set1).ToList() : set1.Except(set2).ToList();
-                                            <form asp-route-Id="@data.Id" method="post">
-                                                <a asp-action="Index" asp-controller="Report" asp-route-id="@data.Id">
-                                                    <li id="@data.Id" class="w3-padding-16">
-                                                        <img width="auto" height="auto" id="IMG_@index" style="max-width:50px; max-height:50px; width: auto; height: auto;" src="~/@string.Join("/", ImgPathArray).Remove(0,1)/@string.Join("", diff)" alt="Image" class="w3-left w3-margin-right" style="width:50px">
-                                                        <span class="w3-large">@data.category</span> <span class="w3-medium">@data.title</span><br>
-                                                        @if (data.remarks.Length <= 10) { <span>@data.remarks</span> }
+                                                                                                            <form asp-route-Id="@data.Id" method="post">
+                                                                                                                <a asp-action="Index" asp-controller="Report" asp-route-id="@data.Id">
+                                                                                                                    <li id="@data.Id" class="w3-padding-16">
+                                                                                                                        <img width="auto" height="auto" id="IMG_@index" style="max-width:50px; max-height:50px; width: auto; height: auto;" src="~/@string.Join("/", ImgPathArray).Remove(0,1)/@string.Join("", diff)" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+                                                                                                                        <span class="w3-large">@data.category</span> <span class="w3-medium">@data.title</span><br>
+                                                                                                                        @if (data.remarks.Length <= 10) { <span>@data.remarks</span> }
                                                     else { <span>@data.remarks.Substring(0,10)</span><span>...</span> } 
-                                                    </li>
-                                                </a>
-                                            </form>
+                                                                                                                    </li>
+                                                                                                                </a>
+                                                                                                            </form>
                                         index++;
                                         break;
-                                    }
-                               }
-                           }
-                       }
+                                     }
+                                }
+                            }
+                        }
                     </ul>
                 </div>
                 <hr> 
             </div>
-        </div><br><br><br><br>
+        </div>
+        <br><br><br><br>
     </div>
 </body>
 </html>

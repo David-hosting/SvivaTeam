@@ -68,5 +68,14 @@ namespace SvivaTeamVersion3.Properties {
                 return ResourceManager.GetString("ConnectionString", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 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.
+        /// </summary>
+        internal static string SendGridAPIKey {
+            get {
+                return ResourceManager.GetString("SendGridAPIKey", resourceCulture);
+            }
+        }
     }
 }

@@ -43,10 +43,16 @@ _**"A Better World Is Made Together"**_
     ![צילום מסך 2023-03-17 204258](https://user-images.githubusercontent.com/67858186/225991434-f6e8bd2b-489c-4ab5-9dcf-f44bbf439761.png)
   - J. Repeat stages `D. to I.` and recover the second file.
 - **Step No.6** - Change the SQL database path to your path
-  - Starting from the `AuthDb` database, 
+  - A. Open the `SQL Server Object Explorer`. If you don't have it you can select it in the view menu. 
+  - B. In the `SQL Server Object Explorer` click on the `AuthDb` database and copy its connection string.<br>
+  ![צילום מסך 2023-03-17 210333](https://user-images.githubusercontent.com/67858186/225995266-5280f1e9-3306-4a90-bd24-a493a706c258.png)
+  - C. Open the `appsettings.json` file and replace the value of `AuthDbContextConnection` with your connection string.<br>
+![צילום מסך 2023-03-17 210530](https://user-images.githubusercontent.com/67858186/225995685-3ad18eab-7e41-4fc6-b75b-a61c2c8b8781.png)
+  ![צילום מסך 2023-03-17 210738](https://user-images.githubusercontent.com/67858186/225996454-fbbdf5ee-e059-4302-be77-e74aad4680e3.png)
+  - D. Repeat stage `B.` In order to get the connection string of the **`main`** database.
+  - E. Open the Resources.resx<br>
+  ![צילום מסך 2023-03-17 211106](https://user-images.githubusercontent.com/67858186/225997677-bd9fcc54-6b62-4c94-9051-5f41d8269e31.png)
 
-    
-  
  
 
   [1]: https://visualstudio.microsoft.com/downloads/

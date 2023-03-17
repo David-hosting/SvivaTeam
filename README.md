@@ -22,13 +22,8 @@ _**"A Better World Is Made Together"**_
   After this, click enter and a `cmd` console will open up, then clone the project to the folder using this command: `git clone https://github.com/David-hosting/SvivaTeam`<br>
   If this is what you are getting then you are good to go:<br>
   ![image](https://user-images.githubusercontent.com/67858186/225978734-1c2d8e24-f1c1-493f-ac7b-282c08995268.png)
-- **Step No.4** - Getting our SQL server connection string
-  - A. Open the solution in visual studio
-  - B. Open the SQL Server Object Explorer tab _you can open it from the view menu_.
-  - C. Click on your SQL server and in the `properties` search for its connection string 
-![צילום מסך 2023-03-17 195304](https://user-images.githubusercontent.com/67858186/225981623-ac7bd43a-37bd-4547-8611-d71e17ed95e1.png)
   - Double-click on the connection string's value (what its in green) and copy it.
-- **Step No.5** - Restoring the `.bak` files:<br>
+- **Step No.4** - Restoring the `.bak` files:<br>
   The `.bak` files are backups of the SQL databases. In order to restore them we will do:
   - A. Open SQL Server Management Studio
   - B. Select your server _be aware that you may have more than one SQL server, so choose the server you to store the databases in_ and connect.<br>

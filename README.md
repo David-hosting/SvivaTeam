@@ -31,7 +31,15 @@ _**"A Better World Is Made Together"**_
 - **Step No.6** - Restoring the `.bak` files:<br>
   The `.bak` files are backups of the SQL databases. In order to restore them we will do:
   - A. Open SQL Server Management Studio
-  - 
+  - B. Select your server _be aware that you may have more than one SQL server, so choose the server you to store the databases in_ and connect.
+   ![צילום מסך 2023-03-17 200638](https://user-images.githubusercontent.com/67858186/225984836-3fe89a42-170b-499d-953d-f47f70bda18b.png)
+  - Open the server and then right click on the `Databases` folder _To open or duble click on it or use the (+) button_.
+  - Select `Restore Database...`
+  ![צילום מסך 2023-03-17 201514](https://user-images.githubusercontent.com/67858186/225985950-d828f930-0c9a-43ed-a5d3-78477194ebe0.png)
+  - A window will pop up, change the Source to `Device` and then on the `[...]` button.
+  ![צילום מסך 2023-03-17 201751](https://user-images.githubusercontent.com/67858186/225986500-8d646dcd-cca3-416c-a809-168b29cb275b.png)
+    Anoter window will pop up, 
+  
  
 
   [1]: https://visualstudio.microsoft.com/downloads/

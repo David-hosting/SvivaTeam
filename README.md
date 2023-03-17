@@ -12,6 +12,7 @@ _**"A Better World Is Made Together"**_
   [Download Visual Studio download link][1]<br>
   [Download SQL Server Management Studio][2]<br>
   [Download Git & Git Bash][3]
+  * _Note: make sure you downloaded the `Data storage and processing` tool in visual studio_
 - **Step No.2** - Creating / Opening a folder where the project will be downloaded:<br>
   You can create a folder or open (preferably) an empty folder
 - **Stem No.3** - Cloning the repo to desktop:<br>
@@ -21,10 +22,17 @@ _**"A Better World Is Made Together"**_
   After this, click enter and a `cmd` console will open up, then clone the project to the folder using this command: `git clone https://github.com/David-hosting/SvivaTeam`<br>
   If this is what you are getting then you are good to go:<br>
   ![image](https://user-images.githubusercontent.com/67858186/225978734-1c2d8e24-f1c1-493f-ac7b-282c08995268.png)
-
-  
-  
-
+- **Step No.5** - Getting our SQL server connection string
+  - A. Open the solution in visual studio
+  - B. Open the SQL Server Object Explorer tab _you can open it from the view menu_.
+  - C. Click on your SQL server and in the `properties` search for its connection string 
+![צילום מסך 2023-03-17 195304](https://user-images.githubusercontent.com/67858186/225981623-ac7bd43a-37bd-4547-8611-d71e17ed95e1.png)
+  - Double-click on the connection string's value (what its in green) and copy it.
+- **Step No.6** - Restoring the `.bak` files:<br>
+  The `.bak` files are backups of the SQL databases. In order to restore them we will do:
+  - A. Open SQL Server Management Studio
+  - 
+ 
 
   [1]: https://visualstudio.microsoft.com/downloads/
   [2]: https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16

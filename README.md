@@ -22,7 +22,6 @@ _**"A Better World Is Made Together"**_
   After this, click enter and a `cmd` console will open up, then clone the project to the folder using this command: `git clone https://github.com/David-hosting/SvivaTeam`<br>
   If this is what you are getting then you are good to go:<br>
   ![image](https://user-images.githubusercontent.com/67858186/225978734-1c2d8e24-f1c1-493f-ac7b-282c08995268.png)
-  - Double-click on the connection string's value (what its in green) and copy it.
 - **Step No.4** - Restoring the `.bak` files:<br>
   The `.bak` files are backups of the SQL databases. In order to restore them we will do:
   - A. Open SQL Server Management Studio

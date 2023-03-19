@@ -7,7 +7,7 @@ _**"A Better World Is Made Together"**_
 - **Step No.1** - Making sure we have:<br>
   - A. Visual Studio
   - B. SQL Server Management Studio
-  - Git & Git Bash
+  - Git & Git Bash<br>
   If you do not have one or any of them you can download them here:<br>
   [Download Visual Studio download link][1]<br>
   [Download SQL Server Management Studio][2]<br>

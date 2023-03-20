@@ -57,7 +57,7 @@ This project is an entrepreneurship environmental, social, long-lasting project.
   ![צילום מסך 2023-03-17 211106](https://user-images.githubusercontent.com/67858186/225997677-bd9fcc54-6b62-4c94-9051-5f41d8269e31.png)
 ![צילום מסך 2023-03-17 214124](https://user-images.githubusercontent.com/67858186/226419233-38d9bbe7-6fb2-4d12-962e-e49c8546a63b.png)
 
-- **Step No.7** - Contact me at `davidioster1gmail.com` for a sendgrid API key<br>
+- **Step No.7** - Contact me at `davidioster1@gmail.com` for a sendgrid API key<br>
   For security reasons the sendgrid API key was removed from the project. In order for the email sender to work you have to follow these steps:<br>
   - A. After contacting me and reciving the API key open the `Resources.resx` and add a new value, give it the name of "SendGridAPIKey" and as for the value put in the API key.
 

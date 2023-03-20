@@ -121,8 +121,4 @@
     <value>Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=main;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False</value>
     <comment>SQL Server Connection</comment>
   </data>
-  <data name="SendGridAPIKey" xml:space="preserve">
-    <value>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</value>
-    <comment>SvivaTeamAPIKey</comment>
-  </data>
 </root>

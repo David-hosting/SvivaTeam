@@ -3,6 +3,9 @@ SvivaTeam
 
 _**"A Better World Is Made Together"**_
 
+## What is SvivTeam? ##
+This project is an entrepreneurship environmental, social, long-lasting project. Its purpose is to make accessible and efficient the organization of cleaning groups. If until today we organized beach cleaning groups through Facebook, and it was sometimes difficult to find an available group or in an area convenient for everyone. This interface offers a website that will centralize all the organizations in a notification map and thus also establish a faster contact with the nature authorities.
+
 ## How To Download ##
 - **Step No.1** - Making sure we have:<br>
   - A. Visual Studio

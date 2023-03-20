@@ -52,7 +52,8 @@ _**"A Better World Is Made Together"**_
   - D. Repeat stage `B.` In order to get the connection string of the **`main`** database.
   - E. Open the `Resources.resx` and replace the value of `ConnectionString`<br>
   ![צילום מסך 2023-03-17 211106](https://user-images.githubusercontent.com/67858186/225997677-bd9fcc54-6b62-4c94-9051-5f41d8269e31.png)
-![צילום מסך 2023-03-17 214124](https://user-images.githubusercontent.com/67858186/226009904-d0cc4cb0-e42e-4a95-a55e-88f70082aa7b.png)
+![צילום מסך 2023-03-17 214124](https://user-images.githubusercontent.com/67858186/226419233-38d9bbe7-6fb2-4d12-962e-e49c8546a63b.png)
+
 - **Step No.7** - Contact me at `davidioster1gmail.com` for a sendgrid API key<br>
   For security reasons the sendgrid API key was removed from the project. In order for the email sender to work you have to follow these steps:<br>
   - A. After contacting me and reciving the API key open the `Resources.resx` and add a new value, give it the name of "SendGridAPIKey" and as for the value put in the API key.

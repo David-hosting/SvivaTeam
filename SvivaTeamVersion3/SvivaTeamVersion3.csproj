@@ -35,4 +35,20 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\email.html">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>email.cs</LastGenOutput>
+    </Content>
+    <Content Update="wwwroot\email.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>email.html</DependentUpon>
+    </Content>
+  </ItemGroup>
+
 </Project>

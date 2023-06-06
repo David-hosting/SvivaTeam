@@ -14,13 +14,16 @@ namespace SvivaTeamVersion3.Services
         public EmailSender(IOptions<AuthMessageSenderOptions>optionsAccessor)
         {
             Options = optionsAccessor.Value;
+            this.APIKey = Properties.Resources.SendGridAPIKey;
         }
 
         public AuthMessageSenderOptions Options { get; }
+        public string APIKey { get; }
+        
 
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            return Execute(Options.SendGridKey, subject, htmlMessage, email);
+            return Execute(this.APIKey, subject, htmlMessage, email);
         }
 
         private Task Execute(string apiKey, string subject, string htmlMessage, string email)

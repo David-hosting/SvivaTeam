@@ -117,8 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AppID" xml:space="preserve">
+    <value>1693608301076718</value>
+  </data>
+  <data name="AppSecret" xml:space="preserve">
+    <value>dcb4deb0fc466143b5e22b3e5fa5f73d</value>
+  </data>
+  <data name="ClientID" xml:space="preserve">
+    <value>550151470985-b31rlgt39pc190nae7kmdct2239foobp.apps.googleusercontent.com</value>
+  </data>
+  <data name="ClientSecret" xml:space="preserve">
+    <value>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</value>
+  </data>
   <data name="ConnectionString" xml:space="preserve">
     <value>Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=main;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False</value>
     <comment>SQL Server Connection</comment>
+  </data>
+  <data name="SendGridAPIKey" xml:space="preserve">
+    <value>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</value>
   </data>
 </root>

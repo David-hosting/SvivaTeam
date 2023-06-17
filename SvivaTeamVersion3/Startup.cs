@@ -14,14 +14,25 @@ using Microsoft.AspNetCore.Identity;
 using SvivaTeamVersion3.Areas.Identity.Data;
 using SvivaTeamVersion3.Data;
 using SvivaTeamVersion3.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace SvivaTeamVersion3
 {
     public class Startup
     {
+        public string ClientID { get; }
+        public string ClientSecret { get; }
+        public string AppID { get; set; }
+        public string AppSecret{ get; set; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            this.ClientID = Properties.Resources.ClientID;
+            this.ClientSecret = Properties.Resources.ClientSecret;
+            this.AppID = Properties.Resources.AppID;
+            this.AppSecret = Properties.Resources.AppSecret;
         }
 
         public IConfiguration Configuration { get; }
@@ -37,6 +48,17 @@ namespace SvivaTeamVersion3
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
 
+
+            services.AddAuthentication()
+                .AddGoogle(options =>
+                {
+                    options.ClientId = this.ClientID;
+                    options.ClientSecret = this.ClientSecret;
+                }).AddFacebook(options =>
+                {
+                    options.AppId = this.AppID;
+                    options.AppSecret = this.AppSecret;
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -12,6 +12,7 @@ namespace SvivaTeamVersion3
 {
     public class AdministrationController
     {
+
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
@@ -28,5 +29,7 @@ namespace SvivaTeamVersion3
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
+
     }
 }

@@ -284,7 +284,7 @@ namespace SvivaTeamVersion3.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult ListUsers()
         {
             var users = userManager.Users;
@@ -292,7 +292,7 @@ namespace SvivaTeamVersion3.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateRole()
         {
             return View();
@@ -324,7 +324,7 @@ namespace SvivaTeamVersion3.Controllers
             return View(model);
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult ListRoles()
         {
@@ -332,7 +332,7 @@ namespace SvivaTeamVersion3.Controllers
             return View(roles);
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> EditUser(string id)
         {
@@ -361,7 +361,7 @@ namespace SvivaTeamVersion3.Controllers
             return View(model);
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> EditRoles(string id)
         {
@@ -391,6 +391,7 @@ namespace SvivaTeamVersion3.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditRoles(EditRoleModel model)
         {
             var role = await roleManager.FindByIdAsync(model.Id);
@@ -420,7 +421,7 @@ namespace SvivaTeamVersion3.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditUsersInRole(string roleId)
         {
             ViewBag.roleId = roleId;
@@ -457,6 +458,7 @@ namespace SvivaTeamVersion3.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditUsersInRole(List<UserRoleModel> model, string roleId)
         {
             var role = await roleManager.FindByIdAsync(roleId);

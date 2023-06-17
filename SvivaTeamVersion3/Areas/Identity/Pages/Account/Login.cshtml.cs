@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using SvivaTeamVersion3.Areas.Identity.Data;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Security.Claims;
 
 namespace SvivaTeamVersion3.Areas.Identity.Pages.Account
 {
@@ -54,6 +56,80 @@ namespace SvivaTeamVersion3.Areas.Identity.Pages.Account
 
             [Display(Name = "Remember me?")]
             public bool RememberMe { get; set; }
+
+            public string ReturnURL { get; set; }
+
+            public IList<AuthenticationScheme> ExternalLogins { get; set; }
+
+        }
+
+        public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
+        {
+            if (remoteError != null)
+            {
+                // Handle the error if there is any
+                // For example, display an error message to the user
+                return RedirectToAction("Login");
+            }
+
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                // Handle the authentication failure
+                // For example, display an error message to the user
+                return RedirectToAction("Login");
+            }
+
+            var signInResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+            if (signInResult.Succeeded)
+            {
+                // The user is successfully signed in with the external provider
+                // Redirect the user to the desired page after successful login
+                if (!string.IsNullOrEmpty(returnUrl))
+                {
+                    return LocalRedirect(returnUrl);
+                }
+                else
+                {
+                    return RedirectToPage("/Index");
+                }
+            }
+            else if (signInResult.IsLockedOut)
+            {
+                // Handle the locked out user case
+                // For example, display a message that the user is locked out
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                // The user does not have a local account
+                // You can create a local user account or redirect to a registration page
+                // For example, you can use the following code to create a new local user account
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                var user = new ApplicationUser { UserName = email, Email = email };
+                var result = await _signInManager.UserManager.CreateAsync(user);
+                if (result.Succeeded)
+                {
+                    result = await _signInManager.UserManager.AddLoginAsync(user, info);
+                    if (result.Succeeded)
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        // Redirect the user to the desired page after successful login
+                        if (!string.IsNullOrEmpty(returnUrl))
+                        {
+                            return LocalRedirect(returnUrl);
+                        }
+                        else
+                        {
+                            return RedirectToPage("/Index");
+                        }
+                    }
+                }
+
+                // Handle the failure to create a local user account
+                // For example, display an error message to the user
+                return RedirectToAction("Login");
+            }
         }
 
         public async Task OnGetAsync(string returnUrl = null)

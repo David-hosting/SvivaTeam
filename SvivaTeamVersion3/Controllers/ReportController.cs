@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
+using System.Threading;
 
 namespace SvivaTeamVersion3.Controllers
 {
@@ -22,6 +23,7 @@ namespace SvivaTeamVersion3.Controllers
     {
         
         private readonly ILogger logger;
+        private Timer _timer;
 
         [Obsolete]
         private IHostingEnvironment hostingEnv;
@@ -83,7 +85,7 @@ namespace SvivaTeamVersion3.Controllers
         [Obsolete]
         public ActionResult Upload(ReportModel upload)
         {
-            string sqlStatement = "INSERT INTO dbo.Reports (category,title,description,statUrgence,cordsLat,cordsLong,path) VALUES (@category,@title,@description,@statUrgence,@cordsLat,@cordsLong,@path)";
+            string sqlStatement = "INSERT INTO dbo.Reports (category,title,description,statUrgence,cordsLat,cordsLong,path,PostOwner,ExpireDate) VALUES (@category,@title,@description,@statUrgence,@cordsLat,@cordsLong,@path,@PostOwner,@ExpireDate)";
 
             using (SqlConnection connection = new SqlConnection(con.ConnectionString))
             {
@@ -95,6 +97,8 @@ namespace SvivaTeamVersion3.Controllers
                 command.Parameters.Add("@statUrgence", SqlDbType.NVarChar, -1).Value = upload.statUrgence;
                 command.Parameters.Add("@cordsLat",    SqlDbType.NChar, 100).Value   = upload.coordLat;
                 command.Parameters.Add("@cordsLong",   SqlDbType.NChar, 100).Value   = upload.coordLong;
+                command.Parameters.Add("@PostOwner",   SqlDbType.NChar, 36).Value    = upload.UserId;
+                command.Parameters.Add("@ExpireDate",  SqlDbType.Date).Value         = upload.ExpireDate;
 
                 var FileDic = "Files";
                 string[] Categories         = { "Road_Problems", "Urban_Problems", "Other" };
@@ -176,7 +180,7 @@ namespace SvivaTeamVersion3.Controllers
             {
                 con.Open();
                 command.Connection = con;
-                command.CommandText = "SELECT [Id], [category], [title], [description], [statUrgence], [cordsLat], [cordsLong], [path] FROM dbo.Reports";
+                command.CommandText = "SELECT [Id], [category], [title], [description], [statUrgence], [cordsLat], [cordsLong], [path], [PostOwner], [ExpireDate] FROM dbo.Reports";
                 dr = command.ExecuteReader();
                 while (dr.Read())
                 {
@@ -187,7 +191,9 @@ namespace SvivaTeamVersion3.Controllers
                                                     statUrgence = dr["statUrgence"].ToString(),
                                                     coordLat = dr["cordsLat"].ToString(),
                                                     coordLong = dr["cordsLong"].ToString(),
-                                                    path = dr["path"].ToString()
+                                                    path = dr["path"].ToString(),
+                                                    UserId = dr["PostOwner"].ToString(),
+// May not be needed                                ExpireDate = Convert.ToDateTime(dr["ExpireDate"])
                     });
                 }
                 con.Close();
@@ -197,6 +203,118 @@ namespace SvivaTeamVersion3.Controllers
                 logger.LogError($"Error While fetching data {e}");
                 Console.WriteLine(e.Message);
             }
+        }
+
+        [HttpPost]
+        public IActionResult OnPostDelete(int id)
+        {
+            string sqlStatement = "DELETE FROM dbo.Reports WHERE ID = @id";
+
+            using (SqlConnection connection = new SqlConnection(con.ConnectionString))
+            {
+                SqlCommand command = new SqlCommand(sqlStatement, connection);
+                command.Parameters.AddWithValue("@id", id);
+
+                connection.Open();
+                int rowsAffected = command.ExecuteNonQuery();
+                connection.Close();
+
+                if (rowsAffected > 0)
+                {
+                    // Deletion successful
+                    return RedirectToAction("Index", "Report");
+                }
+                else
+                {
+                    // No record found with the specified ID
+                    // Handle the error or return an appropriate response
+                    return NotFound();
+                }
+            }
+        }
+        public IActionResult StartRecurringTask()
+        {
+            // Calculate the time until the next midnight
+            TimeSpan timeUntilMidnight = GetTimeUntilNextMidnight();
+
+            // Create a timer that will trigger at the next midnight
+            _timer = new Timer(async state =>
+            {
+                await CheckExperationDateOnPost();
+            }, null, timeUntilMidnight, TimeSpan.FromDays(1));
+
+            return Ok("Recurring task started");
+        }
+
+        private TimeSpan GetTimeUntilNextMidnight()
+        {
+            DateTime now = DateTime.Now;
+            DateTime nextMidnight = now.Date.AddDays(1); // Next midnight without considering time
+            TimeSpan timeUntilMidnight = nextMidnight - now;
+            return timeUntilMidnight;
+        }
+
+        private async Task CheckExperationDateOnPost()
+        {
+            // Perform your task here
+            // Retrieve data from your table and process it
+            try
+            {
+                con.Open();
+                command.Connection = con;
+                command.CommandText = "SELECT [Id] [ExpireDate] FROM dbo.Reports";
+                dr = command.ExecuteReader();
+                while (dr.Read())
+                {
+                    reports.Add(new ReportModel()
+                    {
+                        Id = Convert.ToInt32(dr["Id"]),
+                        ExpireDate = Convert.ToDateTime(dr["ExpireDate"])
+                    });
+                }
+                con.Close();
+            }
+            catch (Exception e)
+            {
+                logger.LogError($"Error while fetching data {e}");
+                Console.WriteLine(e.Message);
+            }
+
+            foreach (ReportModel report in reports)
+            {
+                bool isExpired = CheckDates(report.ExpireDate);
+                if (isExpired)
+                {
+                    string sqlStatement = "DELETE FROM dbo.Reports WHERE ID = @id";
+
+                    using (SqlConnection connection = new SqlConnection(con.ConnectionString))
+                    {
+                        try
+                        {
+                            SqlCommand command = new SqlCommand(sqlStatement, connection);
+                            command.Parameters.AddWithValue("@id", report.Id);
+
+                            connection.Open();
+                            int rowsAffected = command.ExecuteNonQuery();
+                            connection.Close();
+                        }
+                        catch (Exception e)
+                        {
+                            logger.LogError($"Error while Trying to delete data {e}");
+                        }
+                    }
+                }
+            }
+
+            await Task.Delay(1000); // Simulate some async work
+
+            // Log or handle the processed data
+            Console.WriteLine("Task executed at " + DateTime.Now);
+        }
+        public bool CheckDates(DateTime date)
+        {
+            DateTime currentDate = DateTime.Today;
+            return date >= currentDate;
         }
     }
 }

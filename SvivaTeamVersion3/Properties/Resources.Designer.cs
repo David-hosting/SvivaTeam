@@ -19,7 +19,7 @@ namespace SvivaTeamVersion3.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -61,6 +61,42 @@ namespace SvivaTeamVersion3.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 1693608301076718.
+        /// </summary>
+        internal static string AppID {
+            get {
+                return ResourceManager.GetString("AppID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to dcb4deb0fc466143b5e22b3e5fa5f73d.
+        /// </summary>
+        internal static string AppSecret {
+            get {
+                return ResourceManager.GetString("AppSecret", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 550151470985-b31rlgt39pc190nae7kmdct2239foobp.apps.googleusercontent.com.
+        /// </summary>
+        internal static string ClientID {
+            get {
+                return ResourceManager.GetString("ClientID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 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.
+        /// </summary>
+        internal static string ClientSecret {
+            get {
+                return ResourceManager.GetString("ClientSecret", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=main;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False.
         /// </summary>
         internal static string ConnectionString {
@@ -70,7 +106,7 @@ namespace SvivaTeamVersion3.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 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.
+        ///   Looks up a localized string similar to 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.
         /// </summary>
         internal static string SendGridAPIKey {
             get {

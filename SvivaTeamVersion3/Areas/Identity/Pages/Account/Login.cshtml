@@ -1,4 +1,4 @@
-﻿@page
+﻿@*@page
 @model LoginModel
 
 @{ViewData["Title"] = "Login";}
@@ -51,4 +51,82 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial"/>
+}*@
+
+
+@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+@{
+    Layout = "~/Areas/Identity/Pages/_AuthLayout.cshtml";
+}
+
+<div class="col-md-10 offset-1">
+    <div class="login-form-icon">
+        <i class="fas fa-user-circle fa-9x text-secondary"></i>
+    </div>
+    <form id="account" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                </div>
+                <input asp-for="Input.Email" class="form-control" placeholder="Email Address" />
+            </div>
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+                <input asp-for="Input.Password" class="form-control" placeholder="Password" />
+            </div>
+            <span asp-validation-for="Input.Password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <div class="checkbox">
+                <label asp-for="Input.RememberMe">
+                    <input asp-for="Input.RememberMe" />
+                    @Html.DisplayNameFor(m => m.Input.RememberMe)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Log in</button>
+        </div>
+    </form>
+
+    <div>
+        <p>Or sign in using:</p>
+        <ul>
+            @foreach (var provider in Model.ExternalLogins)
+            {
+                <li>
+                    <form id="@provider.Name" asp-page="/Account/ExternalLogin"
+                      asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-inline">
+                        <input type="hidden" name="provider" value="@provider.Name" />
+                        <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                        <button type="submit" class="btn btn-outline-primary" title="Log in using @provider.DisplayName">
+                            <i class="fab fa-@provider.Name.ToLower()"></i> @provider.DisplayName
+                        </button>
+                    </form>
+                </li>
+
+            }
+        </ul>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

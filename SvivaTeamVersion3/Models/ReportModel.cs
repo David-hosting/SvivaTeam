@@ -15,6 +15,7 @@ namespace SvivaTeamVersion3.Models
 {
     public class ReportModel
     {
+
         [Required]
         [DisplayName("Category")]
         public string category { get; set; }
@@ -25,10 +26,6 @@ namespace SvivaTeamVersion3.Models
         [DisplayName("Problem description")]
         public string remarks { get; set; }
         public int Id { get; set; }
-        public string userID { get; set; }
-        [Required]
-        [DisplayName("Report Status")]
-        public statusOfReport statReport { get; set; }
         [Required]
         [DisplayName("Priority")]
         public string statUrgence { get; set; }
@@ -41,9 +38,12 @@ namespace SvivaTeamVersion3.Models
 
         public List<string> Name { get; set; }
         public List<IFormFile> File { get; set; }
-
         public string path { get; set; }
-
         public string reDirectID { get; set; }
+        [Required]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime ExpireDate { get; set; }
+        public string UserId { get; set; }
     }
 }

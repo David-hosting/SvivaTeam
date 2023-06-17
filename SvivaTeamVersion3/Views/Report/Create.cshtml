@@ -1,4 +1,13 @@
 ﻿@model SvivaTeamVersion3.Models.ReportModel
+@using SvivaTeamVersion3.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+@using System.Security.Claims
+
+@{
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var user = await UserManager.FindByIdAsync(userId);
+}
 
 <h4>Add Report</h4>
 <hr />
@@ -6,7 +15,7 @@
 {
     <div class="row">
         <div class="col-md-4">
-            <form asp-action="ProcessReport">
+            <form asp-action="Upload", asp-route-Id="@user.Id"> @*Add the user*@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="category" class="control-label"></label>
@@ -47,6 +56,10 @@
                             display: none;
                         }
                     </style>
+                </div>
+
+                <div class="form-group">
+                    <input asp-for="UserId" type="hidden" class="form-control" id="Id" value="@user.Id" />
                 </div>
 
                 <div class="form-group">
@@ -109,13 +122,19 @@
                     <span asp-validation-for="statUrgence" class="text-danger"></span>
                 </div>
 
-            <div class="form-group row">
-                <label asp-for="File" class="col-sm-2 col-form-label"></label>
-                <div class="custom-file" style="left:3.7%;">
-                    <input type="file" class="form-control custom-file-input" id="File_Upload" name="File" onchange="readURL(this);" accept="image/*" multiple />
-                    <label class="custom-file-label">Chose File</label>
+                <div class="form-group">
+                    <label asp-for="ExpireDate"></label>
+                    <attr title="Choose a date until the ad will be avilable"><input id="expireDate" asp-for="ExpireDate" class="form-control" /></attr>
+                    <span asp-validation-for="ExpireDate" class="text-danger"></span>
                 </div>
-            </div>
+
+                <div class="form-group row">
+                    <label asp-for="File" class="col-sm-2 col-form-label"></label>
+                    <div class="custom-file" style="left:3.7%;">
+                        <input type="file" class="form-control custom-file-input" id="File_Upload" name="File" onchange="readURL(this);" accept="image/*" multiple />
+                        <label class="custom-file-label">Chose File</label>
+                    </div>
+                </div>
                 
                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
@@ -244,6 +263,7 @@
 
                         document.getElementById("lat").value = lat;
                         document.getElementById("long").value = long;
+                        
 
                         if (submit_form.disabled == true){
                             submit_form.disabled = false;
@@ -252,8 +272,26 @@
                     }
                 </script>
 
+                <script>
+                    // Get the date input element
+                    const expireDateInput = document.getElementById('expireDate');
+
+                    // Get today's date
+                    const today = new Date();
+
+                    // Calculate the date 30 days from today
+                    const maxDate = new Date();
+                    maxDate.setDate(today.getDate() + 30);
+
+                    // Format the max date as yyyy-MM-dd
+                    const maxDateString = maxDate.toISOString().split('T')[0];
+
+                    // Set the min and max attributes of the date input
+                    expireDateInput.min = today.toISOString().split('T')[0];
+                    expireDateInput.max = maxDateString;
+                </script>
                 <div class="form-group">
-                    <abbr id="SubmitStatus" title="Please choose a location before you submit your report."><input type="submit" id="AddReportToDB" disabled value="Add Report" class="btn btn-primary" /></abbr>
+                    <attr id="SubmitStatus" title="Please choose a location before you submit your report."><input type="submit" id="AddReportToDB" disabled value="Add Report" class="btn btn-primary" /></attr>
                 </div>
             </form>
         </div>

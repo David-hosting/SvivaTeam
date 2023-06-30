@@ -115,3 +115,81 @@ div.login-form-icon {
     color: snow;
 }
 
+.button-70 #location-button {
+    background: none;
+    border: none;
+    transform: scale(2)
+}
+
+.button-70 {
+    transform: scale(0.7);
+    background-image: linear-gradient(#0dccea, #0d70ea);
+    border: 0;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, .3) 0 5px 15px;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    font-family: Montserrat,sans-serif;
+    font-size: .9em;
+    margin: 5px;
+    padding: 10px 15px;
+    text-align: center;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.form-group #Other1, #Urban_problems1 {
+    display: none;
+}
+
+/*Stages CSS*/
+.card-container {
+    position: relative;
+    left: 30%;
+    /*transform: translateX(-50%);*/
+}
+
+#report-info {
+    position: relative;
+    left: 36%;
+}
+
+.text-container {
+    position: relative;
+    left: 30%;
+    /*transform: translateX(-50%);*/
+}
+
+.progress-container {
+    width: 100%;
+    height: 20px;
+    background-color: #f0f0f0;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: red;
+    width: 0%;
+    transition: width 0.5s;
+}
+
+.progress-bar.yellow {
+    background-color: yellow;
+}
+
+.progress-bar.green {
+    background-color: green;
+}
+
+.button-container {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.center-button {
+    margin: 10px;
+}

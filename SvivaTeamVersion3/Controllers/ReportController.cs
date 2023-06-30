@@ -131,25 +131,24 @@ namespace SvivaTeamVersion3.Controllers
 
                 try
                 {
-                    if (upload.File.Count != 0) { 
+                    if (upload.File == null) throw new ArgumentNullException("value", "No files were uploaded");
 
-                        var RandomFolder = TextGenerator();
+                    var RandomFolder = TextGenerator();
 
-                        var finalDirectory = $"{FilePath}/{upload.category}/{upload.title}/{RandomFolder}";
+                    var finalDirectory = $"{FilePath}/{upload.category}/{upload.title}/{RandomFolder}";
 
-                        Directory.CreateDirectory(finalDirectory);
-                        foreach (var (file, filePath) in from file in upload.File
-                                                        let filePath = Path.Combine(FilePath, upload.category, upload.title, RandomFolder, file.FileName)
-                                                        select (file, filePath))
-                           using (FileStream fs = System.IO.File.Create(filePath))
-                           {
-                               file.CopyTo(fs);
-                           }
-
-                        command.Parameters.Add("@path", System.Data.SqlDbType.NVarChar, -1).Value = Path.Combine(FilePath, upload.category, upload.title, RandomFolder); //finalDirectory
+                    Directory.CreateDirectory(finalDirectory);
+                    foreach (var (file, filePath) in from file in upload.File
+                                                     let filePath = Path.Combine(FilePath, upload.category, upload.title, RandomFolder, file.FileName)
+                                                     select (file, filePath))
+                    using (FileStream fs = System.IO.File.Create(filePath))
+                    {
+                        file.CopyTo(fs);
                     }
+
+                    command.Parameters.Add("@path", System.Data.SqlDbType.NVarChar, -1).Value = Path.Combine(FilePath, upload.category, upload.title, RandomFolder); //finalDirectory
                 }
-                catch (Exception _)
+                catch (ArgumentNullException _)
                 {
                     command.Parameters.Add("@path", System.Data.SqlDbType.NVarChar, -1).Value = Path.Combine(FilePath, "No Images were uploaded.");
                 }
@@ -161,7 +160,7 @@ namespace SvivaTeamVersion3.Controllers
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    logger.LogError($"Error while writing data: {e}");
                     return Redirect("/Report/Create");
                 }
             }
@@ -193,7 +192,6 @@ namespace SvivaTeamVersion3.Controllers
                                                     coordLong = dr["cordsLong"].ToString(),
                                                     path = dr["path"].ToString(),
                                                     UserId = dr["PostOwner"].ToString(),
-// May not be needed                                ExpireDate = Convert.ToDateTime(dr["ExpireDate"])
                     });
                 }
                 con.Close();

@@ -165,7 +165,6 @@
 
                                                     var diff = set2.Count() > set1.Count() ? set2.Except(set1).ToList() : set1.Except(set2).ToList();
 
-
                                                     <img id="IMG_@imageIndex" style="display: block; margin-left: auto; margin-right: auto; width: auto;"
                                                          src="~/@string.Join("/", ImgPathArray).Remove(0,1)/@string.Join("", diff)" />
                                                     imageIndex++;
@@ -194,39 +193,6 @@
                                     {
                                         <div id="N_Images_Of_Report_Number_@_Data.Id">No images were uploaded.</div>
                                     }
-
-                                    bool isOwner = false;
-                                    if (User.Identity.IsAuthenticated)
-                                    {
-                                        var currentUser = await UserManager.GetUserAsync(User);
-                                        if (currentUser != null)
-                                        {
-                                            Console.WriteLine(currentUser.Id.Length);
-                                            Console.WriteLine(_Data.UserId.Length);
-
-                                            if (_Data.UserId == currentUser.Id){
-                                                isOwner = true;
-                                            }
-                                            Console.WriteLine(isOwner);
-                                        }
-                                    }
-
-                                    @if (User.IsInRole("Admin") || isOwner)
-                                    {
-                                        <form asp-controller="Report" asp-action="OnPostDelete" asp-route-ID="@_Data.Id" method="post">
-                                            <button type="submit" class="btn btn-danger" style="position:absolute; left: 38%; top: 94%;">
-                                                Delete Post
-                                            </button>
-                                        </form>
-                                    }
-                                    else {
-                                        <form asp-controller="Report" asp-action="" method="post">
-                                            <button type="submit" class="btn btn-primary" style="left: 0%; top 94%;">
-                                                Register
-                                            </button>
-                                        </form>
-                                    }
-
                                 }
                                 catch (NullReferenceException e)
                                 {
@@ -235,6 +201,36 @@
                             }
                         </div>
                         <br />
+                        @{
+                            bool isOwner = false;
+                            if (User.Identity.IsAuthenticated)
+                            {
+                                var currentUser = await UserManager.GetUserAsync(User);
+                                if (currentUser != null)
+                                    if (_Data.UserId == currentUser.Id)
+                                        isOwner = true;
+                            }
+                            <div class="button-container">
+                                @if (isOwner == false)
+                                {
+                                    <form class="center-button" asp-controller="Report" asp-action="" method="post">
+                                        <button type="submit" class="btn btn-primary">
+                                            @*style="position :absolute; left: 0%; top:94%;"*@
+                                            Register
+                                        </button>
+                                    </form>
+                                }
+                                @if (User.IsInRole("Admin") || isOwner)
+                                {
+                                    <form class="center-button" asp-controller="Report" asp-action="OnPostDelete" asp-route-ID="@_Data.Id" method="post">
+                                        <button type="submit" class="btn btn-danger">
+                                            @*style="position:absolute; left: 38%; top: 94%;"*@
+                                            Delete Post
+                                        </button>
+                                    </form>
+                                }
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -295,6 +291,10 @@
         width: auto;
         height: auto;
         padding: 20px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .popup .close-btn {

@@ -1,5 +1,77 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿<div class="progress-container1">
+    <div id="progress-bar1", class="progress-bar1"></div>
+</div>
+
+<button id="add-btn1">Add</button>
+<button id="remove-btn1">Remove</button>
+
+<style>
+    .progress-container1{
+        width: 200px;
+        height: 20px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        position: relative;
+    }
+
+    .progress-bar1{
+        height: 100%;
+        background-color: red;
+        width: 0%;
+        transition: width 0.5s;
+    }
+
+    .progress-bar1.yellow{
+        background-color: yellow;
+    }
+
+    .progress-bar1.green{
+        background-color: green;
+    }
+</style>
+
+<script>
+    const progressBar = document.getElementById("progress-bar1");
+    const addBtn = document.getElementById("add-btn1");
+    const removeBtn = document.getElementById("remove-btn1");
+    let progress = 34;
+    let stage = 1
+    updateProgressBar();
+
+    addBtn.addEventListener("click", () => {
+        if (progress < 100) {
+            if (stage <= 3) {
+                progress += 33;
+                stage++;
+                updateProgressBar();
+            }
+        }
+    });
+
+    removeBtn.addEventListener("click", () => {
+        if (progress > 0) {
+            if (stage >= 1) {
+                progress -= 33;
+                stage--;
+                updateProgressBar();
+            }
+        }
+    });
+
+    function updateProgressBar(){
+        if (stage >= 1 && stage <= 3){
+            progressBar.style.width = progress + "%";
+            if (progress >= 99) {
+                progressBar.classList.add("green");
+                progressBar.classList.remove("yellow");
+            } else if (progress >= 66) {
+                progressBar.classList.add("yellow");
+                progressBar.classList.remove("green");
+            } else {
+                progressBar.classList.remove("yellow");
+                progressBar.classList.remove("green");
+            }
+        }
+    }
+
+</script>

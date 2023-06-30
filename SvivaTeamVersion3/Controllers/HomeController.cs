@@ -60,7 +60,8 @@ namespace SvivaTeamVersion3.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
         public IActionResult Admin()
         {
             return View();

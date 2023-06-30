@@ -191,3 +191,26 @@ function confirmDelete(uniqeId, isDeleteClicked) {
 function togglePopup(id) {
     document.getElementById("overlay-container-" + id).classList.toggle("active");
 }
+
+document.getElementById("Category").addEventListener("change", function () {
+    let category1 = document.getElementById("Category").value;
+
+    let RP1 = document.getElementById("Road_Problems1");
+    let UP1 = document.getElementById("Urban_problems1");
+    let Other1 = document.getElementById("Other1");
+
+    if (category1 == "Road_Problems") {
+        document.getElementById("hiddenTitle").value = RP1.value;
+        RP1.addEventListener("change", function () {
+            document.getElementById("hiddenTitle").value = RP1.value;
+        })
+    } if (category1 == "Urban_Problems") {
+        document.getElementById("hiddenTitle").value = UP1.value;
+        UP1.addEventListener("change", function () {
+            document.getElementById("hiddenTitle").value = UP1.value;
+        })
+    } if (category1 == "Other") {
+        document.getElementById("hiddenTitle").value = "Other";
+    }
+})
+
